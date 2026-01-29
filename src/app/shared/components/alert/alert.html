@@ -1,0 +1,21 @@
+@if (alertConfirm.state()) {
+  <div class="modal modal-open">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">
+        {{ alertConfirm.state()!.title }}
+      </h3>
+      <p class="py-4">
+        {{ alertConfirm.state()!.message }}
+      </p>
+
+      <div class="modal-action">
+        <button class="btn" (click)="alertConfirm.cancel()">
+          Cancelar
+        </button>
+        <button class="btn btn-error" (click)="alertConfirm.confirm()">
+          {{ alertConfirm.state()!.confirmText ?? 'Confirmar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
