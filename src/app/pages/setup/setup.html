@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-image bg-cover bg-center flex items-center justify-center px-4">
+  <div class="card w-full max-w-md bg-base-300 shadow-xl">
+    <div class="card-body">
+      <div class="text-5xl text-center">📊</div>
+      <h1 class="card-title text-2xl justify-center">
+        {{ isEditMode() ? 'Editar sueldo' : 'Añade tu sueldo' }}
+      </h1>
+
+      <p class="text-base text-center text-base-content">
+        {{ isEditMode() ? 'Modifica tus ingresos y distribución' : 'Indica tus ingresos mensuales y cómo quieres distribuirlos' }}
+      </p>
+
+      <form autocomplete="off" [formGroup]="setupForm" (ngSubmit)="onSumit()" class="space-y-6 mt-6">
+        <div class="form-control">
+          <label class="label" for="amount">
+            <span class="text-lg font-medium mb-1">
+              Ingresos mensuales
+            </span>
+          </label>
+
+          <input type="number" formControlName="amount" placeholder="Ej. 1800"
+            class="input input-bordered w-full input-xl" />
+          @if (formUtils.isValidField(setupForm, 'amount')) {
+          <span class="text-error">
+            {{ formUtils.getFieldError(setupForm, 'amount') }}
+          </span>
+          }
+
+        </div>
+        <div formGroupName="distribution" class="p-4 space-y-4">
+          <h2 class="text-xl font-medium text-center">
+            Distribución del gasto (%)
+          </h2>
+          <div class="form-control">
+            <label class="label">
+              <span class="text-lg font-medium mb-1">Fijos</span>
+            </label>
+            <input type="number" formControlName="fixed" class="input input-bordered input-lg" />
+            @if (formUtils.isValidField(setupForm.controls.distribution, 'fixed')) {
+            <span class="text-error">
+              {{ formUtils.getFieldError(setupForm.controls.distribution, 'fixed') }}
+            </span>
+            }
+
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="text-lg font-medium mb-1">Variables</span>
+            </label>
+            <input type="number" formControlName="variable" class="input input-bordered input-lg" />
+            @if (formUtils.isValidField(setupForm.controls.distribution, 'variable')) {
+            <span class="text-error">
+              {{ formUtils.getFieldError(setupForm.controls.distribution, 'variable') }}
+            </span>
+            }
+
+          </div>
+
+
+          <div class="form-control">
+            <label class="label">
+              <span class="text-lg font-medium mb-1">Ocio</span>
+            </label>
+            <input type="number" formControlName="leisure" class="input input-bordered input-lg" />
+            @if (formUtils.isValidField(setupForm.controls.distribution, 'leisure')) {
+            <span class="text-error">
+              {{ formUtils.getFieldError(setupForm, 'leisure') }}
+            </span>
+            }
+
+          </div>
+
+
+          <div class="form-control">
+            <label class="label">
+              <span class="text-lg font-medium mb-1">Ahorro</span>
+            </label>
+            <input type="number" formControlName="savings" class="input input-bordered input-lg" />
+            @if (formUtils.isValidField(setupForm.controls.distribution, 'savings')) {
+            <span class="text-error">
+              {{ formUtils.getFieldError(setupForm, 'savings') }}
+            </span>
+            }
+
+          </div>
+
+           @if (formUtils.isValidField(setupForm, 'distribution')) {
+            <span class="text-error">
+              {{ formUtils.getFieldError(setupForm, 'distribution') }}
+            </span>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full btn-xl">
+          {{ isEditMode() ? 'Actualizar' : 'Continuar' }}
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+</div>
