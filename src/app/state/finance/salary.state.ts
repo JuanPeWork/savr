@@ -52,6 +52,16 @@ export class SalaryState {
     await this.localStorageService.set<Salary[]>(STORAGE_KEY, this._salaries());
   }
 
+  async delete(id: string) {
+    this._salaries.update((list) => list.filter((s) => s.id !== id));
+    await this.localStorageService.set<Salary[]>(STORAGE_KEY, this._salaries());
+
+    if (this._selectedId() === id) {
+      this._selectedId.set(null);
+      await this.localStorageService.remove(SELECTED_KEY);
+    }
+  }
+
   getById(id: string): Salary | undefined {
     return this._salaries().find((s) => s.id === id);
   }

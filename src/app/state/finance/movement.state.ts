@@ -51,7 +51,13 @@ export class MovementState {
   }
 
   remove(id: string) {
-    this._movements.update(list => list.filter(m => m.id !== id))
+    this._movements.update(list => list.filter(m => m.id !== id));
+    this.persist();
+  }
+
+  async removeBySalaryId(salaryId: string) {
+    this._movements.update(list => list.filter(m => m.salaryId !== salaryId));
+    await this.persist();
   }
 
   async update(movement: Movement) {
