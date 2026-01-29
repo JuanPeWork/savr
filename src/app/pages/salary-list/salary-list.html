@@ -1,0 +1,46 @@
+<div class="flex flex-col w-full min-h-full max-w-md mx-auto px-4 py-6 space-y-6">
+
+  <!-- Header -->
+  <div class="flex items-center gap-3">
+    <button (click)="goBack()" class="btn btn-circle btn-ghost">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z"/>
+      </svg>
+    </button>
+    <h1 class="text-2xl font-bold">Mis Sueldos</h1>
+  </div>
+
+  <!-- Lista de salarios -->
+  <div class="card bg-base-200 shadow-sm">
+    <div class="card-body p-4">
+      <ul class="space-y-3">
+        @for (salary of salaryState.salaries(); track salary.id) {
+          <li (click)="selectSalary(salary.id)"
+              class="flex items-center justify-between bg-base-100 rounded-lg px-4 py-3 cursor-pointer hover:bg-base-300 transition-colors"
+              [class.ring-2]="salary.id === salaryState.activeSalary()?.id"
+              [class.ring-primary]="salary.id === salaryState.activeSalary()?.id">
+            <div class="flex items-center gap-3">
+              <div class="avatar placeholder">
+                <div class="bg-primary/10 text-primary rounded-full w-10 h-10 flex justify-center items-center text-xl">
+                  <span>💰</span>
+                </div>
+              </div>
+              <div>
+                <p class="text-lg font-medium leading-tight">{{ salary.amount | number:'1.2-2' }} €</p>
+                <p class="text-sm opacity-60 capitalize">{{ salary.date | date:'MMMM yyyy' }}</p>
+              </div>
+            </div>
+            @if (salary.id === salaryState.activeSalary()?.id) {
+              <div class="badge badge-primary">Activo</div>
+            }
+          </li>
+        } @empty {
+          <li class="text-center py-8 opacity-60">
+            No hay sueldos registrados
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+</div>

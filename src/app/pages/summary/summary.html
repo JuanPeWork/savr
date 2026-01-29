@@ -1,0 +1,19 @@
+<div class="flex flex-col w-full min-h-full max-w-md mx-auto px-4 py-6 space-y-6">
+
+  <!-- Balance general -->
+  <div class="card bg-base-200 shadow-sm">
+    <div class="card-body py-5">
+      <h3 class="card-title opacity-70">Balance actual</h3>
+      <h1 class="text-4xl font-semibold">{{ financeState.balance() | number:'1.2-2' }} €</h1>
+    </div>
+  </div>
+
+  <!-- Resumen de gastos por categoría -->
+  <div class="grid grid-cols-2 gap-3">
+    <app-stat-card [stat]="financeState.fixedExpenses()"/>
+    <app-stat-card [stat]="financeState.variableExpenses()"/>
+    <app-stat-card [stat]="financeState.savingExpenses()"/>
+    <app-stat-card [stat]="financeState.leisureExpenses()"/>
+  </div>
+
+</div>
