@@ -35,12 +35,10 @@ export class FinanceState {
       .filter(m => m.category === category && m.type === 'expense')
       .reduce((sum, m) => sum + m.amount, 0);
 
-    const totalIncomes = movements
-      .filter(m => m.type === 'income')
-      .reduce((sum, m) => sum + m.amount, 0);
-
-    const availableMoney = (activeSalary?.amount ?? 0) + totalIncomes;
-    const percentage = availableMoney > 0 ? (total / availableMoney) * 100 : 0;
+    const distributionKey = category === 'saving' ? 'savings' : category;
+    const distributionPercent = activeSalary?.distribution[distributionKey] ?? 0;
+    const budget = (activeSalary?.amount ?? 0) * (distributionPercent / 100);
+    const percentage = budget > 0 ? (total / budget) * 100 : 0;
 
     return { total, percentage, name, icon, color };
   }
