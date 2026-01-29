@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import dayjs from '@core/date/daysjs.config';
 import { FormUtils } from '@utils/form-utils';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { SalaryState } from '@state/finance/salary.state';
 import { Salary } from '@domain/finance/interfaces/salary.interface';
 
@@ -16,6 +17,7 @@ export default class Setup implements OnInit {
 
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
+  private location = inject(Location);
   private salaryState = inject(SalaryState);
   private router = inject(Router);
 
@@ -79,6 +81,10 @@ export default class Setup implements OnInit {
     }
 
     this.router.navigate(['finance-space']);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

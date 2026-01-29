@@ -1,5 +1,13 @@
-<div class="flex justify-center min-w-screen p-4">
-  <form autocomplete="off" [formGroup]="movementForm" (ngSubmit)="onSumit()" class="space-y-6 mt-6">
+<div class="flex flex-col min-h-screen">
+  <nav class="flex items-center px-4 py-3">
+    <button type="button" (click)="goBack()" class="btn btn-circle btn-ghost">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z"/>
+      </svg>
+    </button>
+  </nav>
+  <div class="flex justify-center px-4 pb-24">
+  <form autocomplete="off" [formGroup]="movementForm" (ngSubmit)="onSumit()" class="space-y-6">
     <div class="card bg-base-200 w-full">
       <div class="card-body flex flex-row flex-wrap justify-center">
         <h1 class="text-5xl font-medium w-full text-center">
@@ -121,4 +129,5 @@
       {{ isEditMode() ? 'Actualizar' : 'Guardar' }}
     </button>
   </form>
+  </div>
 </div>

@@ -7,6 +7,7 @@ import { MovementState } from '@state/finance/movement.state';
 import dayjs from 'dayjs';
 import { SalaryState } from '../../state/finance/salary.state';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { ToastService } from '@core/ui/toast/toast.service';
 
 @Component({
@@ -19,6 +20,7 @@ import { ToastService } from '@core/ui/toast/toast.service';
 export default class MovementForm implements OnInit {
 
   private route = inject(ActivatedRoute);
+  private location = inject(Location);
   private salaryState = inject(SalaryState);
   private movementState = inject(MovementState);
   private router = inject(Router);
@@ -102,6 +104,10 @@ export default class MovementForm implements OnInit {
     }
 
     this.router.navigate(['/finance-space/movements']);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }
