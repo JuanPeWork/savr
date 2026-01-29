@@ -1,10 +1,13 @@
-<div class="relative flex flex-col justify-center items-center min-h-dvh px-4 py-6 bg-black/50">
-  <button (click)="goBack()" class="btn btn-circle btn-ghost absolute top-4 left-4 text-white">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z"/>
-    </svg>
-  </button>
+<div class="flex flex-col min-h-dvh bg-black/50">
+  <nav class="flex items-center px-4 py-3">
+    <button (click)="goBack()" class="btn btn-circle btn-ghost text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z"/>
+      </svg>
+    </button>
+  </nav>
 
+  <div class="flex-1 flex flex-col justify-center items-center px-4 pb-6">
   @if (movement(); as mov) {
     <div class="ticket">
       <div class="ticket-edge ticket-edge-top"></div>
@@ -59,12 +62,18 @@
       <div class="ticket-edge ticket-edge-bottom"></div>
     </div>
 
-    <button [routerLink]="['edit']" class="btn btn-primary w-full max-w-87.5 mt-4">
-      Editar
-    </button>
+    <div class="flex gap-3 w-full max-w-87.5 mt-4">
+      <button (click)="deleteMovement()" class="btn btn-error flex-1">
+        Eliminar
+      </button>
+      <button [routerLink]="['edit']" class="btn btn-primary flex-1">
+        Editar
+      </button>
+    </div>
   } @else {
     <div class="text-center">
       <p class="text-lg opacity-60">Movimiento no encontrado</p>
     </div>
   }
+  </div>
 </div>
