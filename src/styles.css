@@ -1,1 +1,49 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "bumblebee";
+  default: true;
+  prefersdark: false;
+  color-scheme: 'light';
+  --color-base-100: #FAF7F2;
+  --color-base-200: #F3EEE7;
+  --color-base-300: #E8E2DA;
+  --color-base-content: #473C33;
+  --color-primary: #A3B565;
+  --color-primary-content: #473C33;
+  --color-secondary: #F4D68C;
+  --color-secondary-content: #473C33;
+  --color-accent: #C4C3E3;
+  --color-accent-content: #014a70;
+  --color-neutral: #473C33;
+  --color-neutral-content: #FAF7F2;
+  /* --color-neutral: #504E76;
+  --color-neutral-content: #FDF8E2; */
+  --color-info: #7C9DD2;
+  --color-info-content: #014a70;
+  --color-success: #A3C565;
+  --color-success-content: oklch(37% 0.077 168.94);
+  --color-warning: #FDA769;
+  --color-warning-content: #793205;
+  --color-error: #D14C18;
+  --color-error-content: #801518;
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+  --fontsize: 1rem;
+  --font-size: 1rem;
+}
+
+select {
+  font-size: 1rem;
+}
+
+.bg-image {
+  background-image: url('/assets/images/fondo.png')
+}

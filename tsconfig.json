@@ -3,6 +3,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@domain/*": ["./src/app/domain/*"],
+      "@core/*": ["./src/app/core/*"],
+      "@utils/*": ["./src/app/utils/*"],
+      "@state/*": ["./src/app/state/*"]
+    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
