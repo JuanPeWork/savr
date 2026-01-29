@@ -1,0 +1,70 @@
+<div class="relative flex flex-col justify-center items-center min-h-dvh px-4 py-6 bg-black/50">
+  <button (click)="goBack()" class="btn btn-circle btn-ghost absolute top-4 left-4 text-white">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z"/>
+    </svg>
+  </button>
+
+  @if (movement(); as mov) {
+    <div class="ticket">
+      <div class="ticket-edge ticket-edge-top"></div>
+      <div class="ticket-body">
+        <div class="text-center mb-8">
+          <div class="text-5xl mb-3">{{ categoryConfig[mov.category].icon }}</div>
+          <h1 class="text-2xl font-bold">{{ mov.concept }}</h1>
+          <p class="text-sm opacity-60">{{ categoryConfig[mov.category].label }}</p>
+        </div>
+        <div class="divider-dashed mb-5"></div>
+
+        <div class="grid grid-cols-2 gap-4 my-6">
+          <div>
+            <p class="text-xs opacity-50 uppercase tracking-wide">Tipo</p>
+            <p class="font-semibold">{{ mov.type === 'income' ? 'Ingreso' : 'Gasto' }}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs opacity-50 uppercase tracking-wide">Cantidad</p>
+            <p class="font-semibold text-xl" [class.text-success]="mov.type === 'income'" [class.text-error]="mov.type === 'expense'">
+              {{ mov.type === 'income' ? '+' : '-' }}{{ mov.amount | number:'1.2-2' }} €
+            </p>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <p class="text-xs opacity-50 uppercase tracking-wide">Fecha</p>
+          <p class="font-semibold">{{ mov.date | date:'d MMMM yyyy' }}</p>
+        </div>
+
+        <div class="bg-base-200 rounded-lg p-4 flex items-center gap-3">
+          <span class="text-2xl">{{ paymentConfig[mov.paymentMethod].icon }}</span>
+          <div>
+            <p class="font-semibold">{{ paymentConfig[mov.paymentMethod].label }}</p>
+            <p class="text-sm opacity-60">Método de pago</p>
+          </div>
+        </div>
+
+        @if (mov.note) {
+          <div class="mt-6">
+            <p class="text-xs opacity-50 uppercase tracking-wide">Nota</p>
+            <p class="text-sm mt-1">{{ mov.note }}</p>
+          </div>
+        }
+
+        <div class="divider-dashed mt-6"></div>
+
+        <div class="text-center mt-4">
+          <p class="text-xs opacity-40 font-mono">ID: {{ mov.id }}</p>
+        </div>
+      </div>
+
+      <div class="ticket-edge ticket-edge-bottom"></div>
+    </div>
+
+    <button [routerLink]="['edit']" class="btn btn-primary w-full max-w-87.5 mt-4">
+      Editar
+    </button>
+  } @else {
+    <div class="text-center">
+      <p class="text-lg opacity-60">Movimiento no encontrado</p>
+    </div>
+  }
+</div>

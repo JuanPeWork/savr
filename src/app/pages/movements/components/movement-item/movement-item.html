@@ -1,0 +1,17 @@
+<li [routerLink]="[movement().id]" class="flex items-center justify-between bg-base-100 rounded-lg px-4 py-3 cursor-pointer hover:bg-base-300 transition-colors">
+  <div class="flex items-center gap-3">
+    <div class="avatar placeholder">
+      <div class="bg-primary/10 text-primary rounded-full w-10 flex justify-center items-center text-xl">
+        <span class="pb-1">💵</span>
+      </div>
+    </div>
+    <div>
+      <p class="text-lg font-medium leading-tight">{{ movement().concept }}</p>
+      <p class="text-sm opacity-60">{{ movement().category}}</p>
+    </div>
+  </div>
+  <div class="badge badge-soft font-medium text-lg" [class]="typeMovementClass()">
+    {{ movement().type === 'income' ? '+' : '-' }}
+    {{ movement().amount }}
+  </div>
+</li>
