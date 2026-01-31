@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from '@utils/form-utils';
 import { toSignal } from '@angular/core/rxjs-interop'
@@ -9,13 +9,14 @@ import { SalaryState } from '../../state/finance/salary.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ToastService } from '@core/ui/toast/toast.service';
+import { EmojiPicker } from "src/app/shared/components/emoji-picker/emoji-picker";
+import { ConceptPreset } from '@domain/finance/interfaces/concept-preset.interface';
 
 @Component({
   selector: 'app-movement-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, EmojiPicker],
   templateUrl: './movement-form.html',
-  styleUrl: './movement-form.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './movement-form.css'
 })
 export default class MovementForm implements OnInit {
 
@@ -29,16 +30,34 @@ export default class MovementForm implements OnInit {
 
   readonly isEditMode = signal(false);
   private editingId: string | null = null;
+  icon = signal<string>('😀');
 
   movementForm = this.fb.nonNullable.group({
     type: [false, Validators.required],
-    amount: [0, [Validators.required, Validators.min(0)]],
+    amount: [0, [Validators.required, Validators.min(0.01)]],
     category: ['variable', Validators.required],
     concept: ['', [Validators.required, Validators.minLength(3)]],
     paymentMethod: ['card', Validators.required],
     date: ['', Validators.required],
     note: ['']
   });
+
+  readonly conceptPresets: ConceptPreset[] = [
+    { label: 'Alquiler', icon: '🏠' },
+    { label: 'Supermercado', icon: '🛒' },
+    { label: 'Gasolina', icon: '⛽' },
+    { label: 'Restaurante', icon: '🍔' },
+    { label: 'Netflix', icon: '🎬' },
+    { label: 'Transporte', icon: '🚌' },
+    { label: 'Ahorro', icon: '💰' },
+  ];
+
+  readonly conceptValue = toSignal(
+    this.movementForm.controls.concept.valueChanges,
+    { initialValue: this.movementForm.controls.concept.value }
+  );
+
+  readonly showConceptDropdown = signal(false);
 
   formUtils = FormUtils;
 
@@ -51,6 +70,16 @@ export default class MovementForm implements OnInit {
     this.isIncome() ? 'income' : 'expense'
   );
 
+  readonly filteredConcepts = computed(() => {
+    const value = (this.conceptValue() ?? '').toLowerCase();
+
+    if (!value) return this.conceptPresets.slice(0, 6);
+
+    return this.conceptPresets
+      .filter(c => c.label.toLowerCase().includes(value))
+      .slice(0, 6);
+  });
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -59,6 +88,7 @@ export default class MovementForm implements OnInit {
         this.isEditMode.set(true);
         this.editingId = id;
         this.loadMovementData(movement);
+        this.icon.set(movement.icon);
       }
     }
   }
@@ -73,6 +103,12 @@ export default class MovementForm implements OnInit {
       date: movement.date,
       note: movement.note ?? ''
     });
+  }
+
+  selectConcept(item: ConceptPreset) {
+    this.movementForm.controls.concept.setValue(item.label);
+    this.icon.set(item.icon);
+    this.showConceptDropdown.set(false);
   }
 
   onSumit() {
@@ -90,6 +126,7 @@ export default class MovementForm implements OnInit {
       type: this.isIncome() ? 'income' : 'expense' as MovementType,
       category: formValue.category as MovementCategory,
       paymentMethod: formValue.paymentMethod as PaymentMethod,
+      icon: this.icon(),
       concept: formValue.concept,
       date: dayjs(formValue.date).format('YYYY-MM-DD'),
       note: formValue.note

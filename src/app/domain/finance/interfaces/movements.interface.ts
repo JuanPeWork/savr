@@ -9,6 +9,7 @@ export interface Movement {
   amount: number;
   category: MovementCategory;
   paymentMethod: PaymentMethod;
+  icon: string;
   concept: string;
   date: string;
   note?: string;

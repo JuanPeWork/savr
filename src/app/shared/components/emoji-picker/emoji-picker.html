@@ -1,0 +1,23 @@
+<div class="relative">
+  <button type="button" class="btn" (click)="toggleEmojiPicker()">
+    {{ value() }}
+  </button>
+  @if (showEmojiPicker()) {
+    <div
+      class="absolute z-50 mt-2 p-2 left-0
+             bg-base-100 rounded-box shadow-lg w-72
+             max-h-60 overflow-y-auto border border-base-300
+             grid grid-cols-6 gap-1"
+    >
+      @for (emoji of emojiList; track emoji) {
+        <button
+          type="button"
+          class="btn btn-ghost btn-sm text-xl"
+          (click)="selectEmoji(emoji)"
+        >
+          {{ emoji }}
+        </button>
+      }
+    </div>
+  }
+</div>

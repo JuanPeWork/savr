@@ -2,132 +2,144 @@
   <nav class="flex items-center px-4 py-3">
     <button type="button" (click)="goBack()" class="btn btn-circle btn-ghost">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z"/>
+        <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z" />
       </svg>
     </button>
   </nav>
   <div class="flex justify-center px-4 pb-24">
-  <form autocomplete="off" [formGroup]="movementForm" (ngSubmit)="onSumit()" class="space-y-6">
-    <div class="card bg-base-200 w-full">
-      <div class="card-body flex flex-row flex-wrap justify-center">
-        <h1 class="text-5xl font-medium w-full text-center">
-          @if(movementType() === 'income') {
-          📈
-          } @else {
-          📉
-          }
-        </h1>
-        <h3 class="text-2xl font-medium w-full text-center">
-          {{ movementType() === 'income' ? 'Ingreso' : 'Gasto' }}
-        </h3>
-        <div class="flex items-center form-control">
-          <label class="swap swap-rotate">
-            <input type="checkbox" formControlName="type" />
-            <svg class="swap-on h-10 w-10 fill-current text-success" xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24">
-              <rect width="24" height="24" fill="none" />
-              <path fill="currentColor"
-                d="M12 21q-.425 0-.712-.288T11 20v-7H4q-.425 0-.712-.288T3 12t.288-.712T4 11h7V4q0-.425.288-.712T12 3t.713.288T13 4v7h7q.425 0 .713.288T21 12t-.288.713T20 13h-7v7q0 .425-.288.713T12 21" />
-            </svg>
-            <svg class="swap-off h-10 w-10 fill-current text-error" xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24">
-              <rect width="24" height="24" fill="none" />
-              <path fill="currentColor"
-                d="M6 13q-.425 0-.712-.288T5 12t.288-.712T6 11h12q.425 0 .713.288T19 12t-.288.713T18 13z" />
-            </svg>
-          </label>
-        </div>
-        <div class="form-control w-1/2">
-          <input type="number" formControlName="amount" placeholder="Ej. 1800" class="input input-bordered w-full input-xl" />
-          @if (formUtils.isValidField(movementForm, 'amount')) {
-          <span class="text-error">
-            {{ formUtils.getFieldError(movementForm, 'amount') }}
-          </span>
-          }
+    <form autocomplete="off" [formGroup]="movementForm" (ngSubmit)="onSumit()" class="space-y-6">
+      <div class="card bg-base-200 w-full">
+        <div class="card-body flex flex-row flex-wrap justify-center">
+          <h1 class="text-5xl font-medium w-full text-center">
+            @if(movementType() === 'income') { 📈 } @else { 📉 }
+          </h1>
+          <h3 class="text-2xl font-medium w-full text-center">
+            {{ movementType() === 'income' ? 'Ingreso' : 'Gasto' }}
+          </h3>
+          <div class="flex items-center form-control self-start pt-2">
+            <label class="swap swap-rotate">
+              <input type="checkbox" formControlName="type" />
+              <svg class="swap-on h-10 w-10 fill-current text-success" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24">
+                <rect width="24" height="24" fill="none" />
+                <path fill="currentColor"
+                  d="M12 21q-.425 0-.712-.288T11 20v-7H4q-.425 0-.712-.288T3 12t.288-.712T4 11h7V4q0-.425.288-.712T12 3t.713.288T13 4v7h7q.425 0 .713.288T21 12t-.288.713T20 13h-7v7q0 .425-.288.713T12 21" />
+              </svg>
+              <svg class="swap-off h-10 w-10 fill-current text-error" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24">
+                <rect width="24" height="24" fill="none" />
+                <path fill="currentColor"
+                  d="M6 13q-.425 0-.712-.288T5 12t.288-.712T6 11h12q.425 0 .713.288T19 12t-.288.713T18 13z" />
+              </svg>
+            </label>
+          </div>
+          <div class="form-control w-1/2">
+            <input type="number" formControlName="amount" placeholder="Ej. 1800"
+              class="input input-bordered w-full input-xl" />
+              <span class="text-error text-sm block h-5">
+                @if (formUtils.isValidField(movementForm, 'amount')) {
+                  {{ formUtils.getFieldError(movementForm, 'amount') }}
+                }
+              </span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="card bg-base-200">
-      <div class="card-body">
-        <div class="form-control">
-          <label class="label" for="category">
-            <span class="text-lg font-medium mb-1">
-              Categoria*
-            </span>
-          </label>
-          <select formControlName="category" class="select select-bordered w-full">
-            <option value="fixed">Fijo</option>
-            <option value="variable">Variable</option>
-            <option value="saving">Ahorro</option>
-            <option value="leisure">Ocio</option>
-          </select>
-          @if (formUtils.isValidField(movementForm, 'category')) {
-          <span class="text-error">
-            {{ formUtils.getFieldError(movementForm, 'category') }}
-          </span>
-          }
-        </div>
-        <div class="form-control">
-          <label class="label" for="concept">
-            <span class="text-lg font-medium mb-1">
-              Concepto*
-            </span>
-          </label>
-          <input type="text" formControlName="concept" class="input input-bordered w-full">
-          @if (formUtils.isValidField(movementForm, 'concept')) {
-          <span class="text-error">
-            {{ formUtils.getFieldError(movementForm, 'concept') }}
-          </span>
-          }
-        </div>
-        <div class="form-control">
-          <label class="label" for="paymentMethod">
-            <span class="text-lg font-medium mb-1">
-              Método de pago*
-            </span>
-          </label>
-          <select formControlName="paymentMethod" class="select select-bordered w-full">
-            <option value="card">Tarjeta</option>
-            <option value="cash">Contado</option>
-            <option value="domiciled">Domiciliado</option>
-          </select>
-          @if (formUtils.isValidField(movementForm, 'paymentMethod')) {
-          <span class="text-error">
-            {{ formUtils.getFieldError(movementForm, 'paymentMethod') }}
-          </span>
-          }
-        </div>
-        <div class="form-control">
-          <label class="label" for="date">
-            <span class="text-lg font-medium mb-1">
-              Fecha*
-            </span>
-          </label>
-          <input type="date" formControlName="date" class="input input-bordered w-full">
-            @if (formUtils.isValidField(movementForm, 'date')) {
-            <span class="text-error">
-              {{ formUtils.getFieldError(movementForm, 'date') }}
-            </span>
+      <div class="card bg-base-200">
+        <div class="card-body">
+          <div class="form-control">
+            <label class="label" for="category">
+              <span class="text-lg font-medium mb-1">
+                Categoria*
+              </span>
+            </label>
+            <select formControlName="category" class="select select-bordered w-full">
+              <option value="fixed">Fijo</option>
+              <option value="variable">Variable</option>
+              <option value="saving">Ahorro</option>
+              <option value="leisure">Ocio</option>
+            </select>
+            @if (formUtils.isValidField(movementForm, 'category')) {
+              <span class="text-error text-sm">
+                {{ formUtils.getFieldError(movementForm, 'category') }}
+              </span>
             }
-        </div>
-        <div class="form-control">
-          <label class="label" for="note">
-            <span class="text-lg font-medium mb-1">
-              Nota
-            </span>
-          </label>
-          <textarea formControlName="note" class="textarea w-full" placeholder="Añadir comentario..."></textarea>
-          @if (formUtils.isValidField(movementForm, 'note')) {
-          <span class="text-error">
-            {{ formUtils.getFieldError(movementForm, 'note') }}
-          </span>
-          }
+          </div>
+          <div class="form-control relative">
+            <label class="label" for="concept">
+              <span class="text-lg font-medium mb-1">
+                Concepto*
+              </span>
+            </label>
+            <div class="join w-full">
+              <app-emoji-picker [value]="icon()" (valueChange)="icon.set($event)" />
+              <input type="text" formControlName="concept" class="input input-bordered join-item flex-1"
+                (focus)="showConceptDropdown.set(true)" (blur)="showConceptDropdown.set(false)" />
+            </div>
+            @if (showConceptDropdown() && filteredConcepts().length) {
+              <div class="absolute z-50 top-full mt-1 w-full rounded-box bg-base-100 shadow-lg border border-base-300 max-h-48 overflow-y-auto">
+                @for (item of filteredConcepts(); track item.label) {
+                  <button type="button" class="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-base-200"
+                    (mousedown)="$event.preventDefault()" (click)="selectConcept(item)">
+                    <span class="text-xl">{{ item.icon }}</span>
+                    <span>{{ item.label }}</span>
+                  </button>
+                }
+              </div>
+            }
+            @if (formUtils.isValidField(movementForm, 'concept')) {
+              <span class="text-error text-sm">
+                {{ formUtils.getFieldError(movementForm, 'concept') }}
+              </span>
+            }
+          </div>
+          <div class="form-control">
+            <label class="label" for="paymentMethod">
+              <span class="text-lg font-medium mb-1">
+                Método de pago*
+              </span>
+            </label>
+            <select formControlName="paymentMethod" class="select select-bordered w-full">
+              <option value="card">Tarjeta</option>
+              <option value="cash">Contado</option>
+              <option value="domiciled">Domiciliado</option>
+            </select>
+            @if (formUtils.isValidField(movementForm, 'paymentMethod')) {
+              <span class="text-error text-sm">
+                {{ formUtils.getFieldError(movementForm, 'paymentMethod') }}
+              </span>
+            }
+          </div>
+          <div class="form-control">
+            <label class="label" for="date">
+              <span class="text-lg font-medium mb-1">
+                Fecha*
+              </span>
+            </label>
+            <input type="date" formControlName="date" class="input input-bordered w-full">
+@if (formUtils.isValidField(movementForm, 'date')) {
+              <span class="text-error text-sm">
+                {{ formUtils.getFieldError(movementForm, 'date') }}
+              </span>
+            }
+          </div>
+          <div class="form-control">
+            <label class="label" for="note">
+              <span class="text-lg font-medium mb-1">
+                Nota
+              </span>
+            </label>
+            <textarea formControlName="note" class="textarea w-full" placeholder="Añadir comentario..."></textarea>
+@if (formUtils.isValidField(movementForm, 'note')) {
+              <span class="text-error text-sm">
+                {{ formUtils.getFieldError(movementForm, 'note') }}
+              </span>
+            }
+          </div>
         </div>
       </div>
-    </div>
-    <button type="submit" class="btn btn-primary w-full btn-xl">
-      {{ isEditMode() ? 'Actualizar' : 'Guardar' }}
-    </button>
-  </form>
+      <button type="submit" class="btn btn-primary w-full btn-xl">
+        {{ isEditMode() ? 'Actualizar' : 'Guardar' }}
+      </button>
+    </form>
   </div>
 </div>
