@@ -1,7 +1,7 @@
-<div class="flex flex-col w-full min-h-full max-w-md mx-auto px-4 pt-6 pb-24 space-y-6">
+<div class="page-layout">
 
     <!-- Card ahorro acumulado -->
-    <div class="card bg-base-200 shadow-sm">
+    <div class="card-base">
       <div class="card-body py-5 flex flex-col gap-1">
         <h3 class="card-title opacity-70">Ahorro acumulado</h3>
         <h1 class="text-5xl font-semibold">
@@ -11,7 +11,7 @@
     </div>
 
     <!-- Gráfica -->
-    <div class="card bg-base-200 shadow-sm">
+    <div class="card-base">
       <div class="card-body py-5">
         <h3 class="card-title opacity-70 mb-4">Evolución del ahorro</h3>
         @if (savingsBySalary().length > 0) {
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Ahorro medio -->
-    <div class="card bg-base-200 shadow-sm">
+    <div class="card-base">
       <div class="card-body py-4">
         <p class="text-lg text-center">
           <span class="opacity-70">Ahorro medio:</span>
@@ -39,15 +39,15 @@
     </div>
 
     <!-- Listado de sueldos con ahorro -->
-    <div class="card bg-base-200 shadow-sm">
+    <div class="card-base">
       <div class="card-body p-4">
         <h3 class="card-title opacity-70 mb-3">Ahorro por sueldo</h3>
         <ul class="space-y-3">
           @for (item of savingsBySalary(); track item.salary.id) {
-            <li class="flex items-center justify-between bg-base-100 rounded-lg px-4 py-3">
+            <li class="list-item">
               <div class="flex items-center gap-3">
                 <div class="avatar placeholder">
-                  <div class="bg-primary/10 text-primary rounded-full w-10 h-10 flex justify-center items-center text-xl">
+                  <div class="avatar-icon">
                     <span>💰</span>
                   </div>
                 </div>

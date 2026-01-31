@@ -1,6 +1,6 @@
-<div class="flex flex-col justify-around w-full min-h-full max-w-md mx-auto px-4 pt-6 pb-24 space-y-8">
+<div class="page-layout">
 
-  <div class="card bg-base-200 shadow-sm overflow-hidden">
+  <div class="card-base overflow-hidden">
 
     <!-- Contenido principal -->
     <div class="card-body py-5 flex flex-col gap-1">
@@ -16,23 +16,17 @@
     </div>
 
     <div class="bg-base-300 backdrop-blur-sm px-4 py-3 flex justify-end gap-3">
-      <button routerLink="/finance-space/salary-list" class="btn btn-accent btn-circle shadow-lg w-14 h-14
-             transition-transform duration-200 ease-out
-             active:scale-90">
+      <button routerLink="/finance-space/salary-list" class="btn-action btn-accent">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><path fill="currentColor" d="M11 9h6q.425 0 .713-.288T18 8t-.288-.712T17 7h-6.025q-.425 0-.7.288T10 8t.288.713T11 9m0 3h3q.425 0 .713-.288T15 11t-.288-.712T14 10h-3.025q-.425 0-.7.288T10 11t.288.713T11 12m-5.55 8.975Q4.625 21.1 4 20.6t-.75-1.325L2.025 10.35q-.125-.8.388-1.45t1.312-.775H4V14q0 1.65 1.175 2.825T8 18h11q-.2.525-.612.888t-1.013.437zM8 16.1q-.825 0-1.412-.587T6 14.1V5q0-.825.588-1.412T8 3h12q.825 0 1.413.588T22 5v9.1q0 .825-.587 1.413T20 16.1z"/></svg>
       </button>
-      <button (click)="editSalary()" class="btn btn-secondary btn-circle shadow-lg w-14 h-14
-             transition-transform duration-200 ease-out
-             active:scale-90">
+      <button (click)="editSalary()" class="btn-action btn-secondary">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <rect width="24" height="24" fill="none" />
           <path fill="currentColor"
             d="M3 21v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z" />
         </svg>
       </button>
-      <button routerLink="/setup" class="btn btn-primary btn-circle shadow-lg w-14 h-14
-             transition-transform duration-200 ease-out
-             active:scale-90 font-bold">
+      <button routerLink="/setup" class="btn-action btn-primary font-bold">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <rect width="24" height="24" fill="none" />
           <path fill="currentColor"
@@ -42,7 +36,7 @@
     </div>
   </div>
 
-  <div class="flex-6 card bg-base-200 shadow-sm">
+  <div class="flex-6 card-base">
     <div class="card-body py-5">
       <div class="flex justify-center mt-4">
         <div class="join">

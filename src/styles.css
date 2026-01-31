@@ -47,3 +47,36 @@ select {
 .bg-image {
   background-image: url('/assets/images/fondo.png')
 }
+
+/* Custom utility classes */
+.page-layout {
+  @apply flex flex-col w-full min-h-full max-w-md mx-auto px-4 pt-6 pb-24 space-y-8;
+}
+
+.card-base {
+  @apply card bg-base-200 shadow-sm;
+}
+
+.list-item {
+  @apply flex items-center justify-between bg-base-100 rounded-lg px-4 py-3;
+}
+
+.list-item-interactive {
+  @apply flex items-center justify-between bg-base-100 rounded-lg px-4 py-3 cursor-pointer hover:bg-base-300 transition-colors;
+}
+
+.avatar-icon {
+  @apply bg-primary/10 text-primary rounded-full w-10 h-10 flex justify-center items-center text-xl;
+}
+
+.nav-header {
+  @apply flex items-center gap-3 px-4 py-3;
+}
+
+.btn-back {
+  @apply btn btn-circle btn-ghost;
+}
+
+.btn-action {
+  @apply btn btn-circle shadow-lg w-14 h-14 transition-transform duration-200 ease-out active:scale-90;
+}
