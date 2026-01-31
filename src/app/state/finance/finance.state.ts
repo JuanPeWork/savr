@@ -50,4 +50,35 @@ export class FinanceState {
         : total - movement.amount;
     }, 0);
   }
+
+  // Savings
+  readonly savingsBySalary = computed(() => {
+    const salaries = this.salaryState.salaries();
+    const movements = this.movementState.movements();
+
+    return salaries.map(salary => {
+      const salaryMovements = movements.filter(
+        m => m.salaryId === salary.id && m.category === 'saving'
+      );
+
+      const saving = salaryMovements.reduce((acc, m) => {
+        return m.type === 'expense' ? acc + m.amount : acc - m.amount;
+      }, 0);
+
+      return {
+        salary,
+        saving
+      };
+    });
+  });
+
+  readonly totalSavings = computed(() => {
+    return this.savingsBySalary().reduce((acc, item) => acc + item.saving, 0);
+  });
+
+  readonly averageSavings = computed(() => {
+    const items = this.savingsBySalary();
+    if (items.length === 0) return 0;
+    return this.totalSavings() / items.length;
+  });
 }
