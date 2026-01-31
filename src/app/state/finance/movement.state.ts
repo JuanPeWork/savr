@@ -1,14 +1,14 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { LocalStorageService } from '../../core/storage/local-storage.service';
 import { Movement } from '@domain/finance/interfaces/movements.interface';
 import { SalaryState } from './salary.state';
+import { STORAGE } from 'src/app/app.config';
 
 const STORAGE_KEY = 'movements'
 
 @Injectable({ providedIn: 'root' })
 export class MovementState {
 
-  storageService = inject(LocalStorageService);
+  storageService = inject(STORAGE);
   private readonly salaryState = inject(SalaryState);
 
   private readonly _movements = signal<Movement[]>([]);

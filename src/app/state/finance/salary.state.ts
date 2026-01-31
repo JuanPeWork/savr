@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
-import { LocalStorageService } from "@core/storage/local-storage.service";
+
 import { Salary } from "@domain/finance/interfaces/salary.interface";
+import { STORAGE } from "src/app/app.config";
 
 const STORAGE_KEY = 'finance_space';
 const SELECTED_KEY = 'selected_salary_id';
@@ -8,7 +9,7 @@ const SELECTED_KEY = 'selected_salary_id';
 @Injectable({ providedIn: 'root' })
 export class SalaryState {
 
-  private localStorageService = inject(LocalStorageService);
+  private storageService = inject(STORAGE);
 
   private readonly _salaries = signal<Salary[]>([]);
   private readonly _selectedId = signal<string | null>(null);
@@ -41,7 +42,7 @@ export class SalaryState {
 
   async create(salary: Salary) {
     this._salaries.update((s) => [...s, salary]);
-    await this.localStorageService.set<Salary[]>(STORAGE_KEY, this._salaries());
+    await this.storageService.set<Salary[]>(STORAGE_KEY, this._salaries());
     await this.select(salary.id);
   }
 
@@ -49,16 +50,16 @@ export class SalaryState {
     this._salaries.update((list) =>
       list.map((s) => s.id === salary.id ? salary : s)
     );
-    await this.localStorageService.set<Salary[]>(STORAGE_KEY, this._salaries());
+    await this.storageService.set<Salary[]>(STORAGE_KEY, this._salaries());
   }
 
   async delete(id: string) {
     this._salaries.update((list) => list.filter((s) => s.id !== id));
-    await this.localStorageService.set<Salary[]>(STORAGE_KEY, this._salaries());
+    await this.storageService.set<Salary[]>(STORAGE_KEY, this._salaries());
 
     if (this._selectedId() === id) {
       this._selectedId.set(null);
-      await this.localStorageService.remove(SELECTED_KEY);
+      await this.storageService.remove(SELECTED_KEY);
     }
   }
 
@@ -68,12 +69,12 @@ export class SalaryState {
 
   async select(id: string) {
     this._selectedId.set(id);
-    await this.localStorageService.set<string>(SELECTED_KEY, id);
+    await this.storageService.set<string>(SELECTED_KEY, id);
   }
 
   private async init() {
-    const stored = await this.localStorageService.get<Salary[]>(STORAGE_KEY);
-    const selectedId = await this.localStorageService.get<string>(SELECTED_KEY);
+    const stored = await this.storageService.get<Salary[]>(STORAGE_KEY);
+    const selectedId = await this.storageService.get<string>(SELECTED_KEY);
 
     if (stored && Array.isArray(stored)) {
       this._salaries.set(stored);
@@ -87,8 +88,8 @@ export class SalaryState {
   reset() {
     this._salaries.set([]);
     this._selectedId.set(null);
-    this.localStorageService.remove(STORAGE_KEY);
-    this.localStorageService.remove(SELECTED_KEY);
+    this.storageService.remove(STORAGE_KEY);
+    this.storageService.remove(SELECTED_KEY);
   }
 
 }

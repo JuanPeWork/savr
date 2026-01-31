@@ -8,7 +8,7 @@ import { ToastService } from '@core/ui/toast/toast.service';
 
 @Component({
   selector: 'app-salary-list',
-  imports: [DatePipe, DecimalPipe, RouterLink],
+  imports: [DatePipe, DecimalPipe ],
   templateUrl: './salary-list.html',
   styleUrl: './salary-list.css'
 })

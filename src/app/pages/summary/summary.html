@@ -4,16 +4,16 @@
   <div class="card bg-base-200 shadow-sm">
     <div class="card-body py-5">
       <h3 class="card-title opacity-70">Balance actual</h3>
-      <h1 class="text-4xl font-semibold">{{ financeState.balance() | number:'1.2-2' }} €</h1>
+      <h1 class="text-4xl font-semibold">{{ balance | number:'1.2-2' }} €</h1>
     </div>
   </div>
 
   <!-- Resumen de gastos por categoría -->
   <div class="grid grid-cols-2 gap-3">
-    <app-stat-card [stat]="financeState.fixedExpenses()"/>
-    <app-stat-card [stat]="financeState.variableExpenses()"/>
-    <app-stat-card [stat]="financeState.savingExpenses()"/>
-    <app-stat-card [stat]="financeState.leisureExpenses()"/>
+    <app-stat-card [stat]="fixedExpenses"/>
+    <app-stat-card [stat]="variableExpenses"/>
+    <app-stat-card [stat]="savingExpenses"/>
+    <app-stat-card [stat]="leisureExpenses"/>
   </div>
 
 </div>

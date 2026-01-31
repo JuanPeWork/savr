@@ -12,5 +12,10 @@ import { StatCard } from "./components/stat-card/stat-card";
 })
 export default class Summary {
   financeState = inject(FinanceState);
-  salaryState = inject(SalaryState);
+
+  readonly balance = this.financeState.balance();
+  readonly fixedExpenses = this.financeState.fixedExpenses();
+  readonly variableExpenses = this.financeState.variableExpenses();
+  readonly savingExpenses = this.financeState.savingExpenses();
+  readonly leisureExpenses = this.financeState.leisureExpenses();
 }
