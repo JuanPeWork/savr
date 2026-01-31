@@ -2,12 +2,12 @@
   <div class="flex items-center gap-3">
     <div class="avatar placeholder">
       <div class="bg-primary/10 text-primary rounded-full w-10 flex justify-center items-center text-xl">
-        <span class="pb-1">💵</span>
+        <span class="pb-1">{{ movement().icon }}</span>
       </div>
     </div>
     <div>
       <p class="text-lg font-medium leading-tight">{{ movement().concept }}</p>
-      <p class="text-sm opacity-60">{{ movement().category}}</p>
+      <p class="text-sm opacity-60">{{ categoryLabels[movement().category] }}</p>
     </div>
   </div>
   <div class="badge badge-soft font-medium text-lg" [class]="typeMovementClass()">
