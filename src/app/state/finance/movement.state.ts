@@ -71,4 +71,9 @@ export class MovementState {
     this.storageService.set(STORAGE_KEY, this._movements())
   }
 
+  reset() {
+    this._movements.set([]);
+    this.storageService.remove(STORAGE_KEY);
+  }
+
 }

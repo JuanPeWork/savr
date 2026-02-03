@@ -66,6 +66,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/saving/saving')
       },
       {
+        path: 'settings',
+        loadComponent: () => import('./pages/settings/settings')
+      },
+      {
         path: '**',
         redirectTo: 'home'
       },
