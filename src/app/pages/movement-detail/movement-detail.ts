@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location, DecimalPipe, DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -11,8 +11,7 @@ import { ToastService } from '@core/ui/toast/toast.service';
   selector: 'app-movement-detail',
   imports: [DecimalPipe, DatePipe, RouterLink],
   templateUrl: './movement-detail.html',
-  styleUrl: './movement-detail.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './movement-detail.css'
 })
 export default class MovementDetail {
 
@@ -42,6 +41,7 @@ export default class MovementDetail {
     cash: { icon: '💵', label: 'Efectivo' },
     card: { icon: '💳', label: 'Tarjeta' },
     domiciled: { icon: '🏦', label: 'Domiciliado' },
+    transfer: { icon: '📤', label: 'Transferencia' },
   };
 
   goBack() {
