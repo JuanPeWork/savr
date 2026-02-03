@@ -1,6 +1,7 @@
 export type MovementType = 'income' | 'expense';
 export type MovementCategory = 'fixed' | 'variable' | 'saving' | 'leisure';
-export type PaymentMethod = 'cash' | 'card' | 'domiciled';
+export type PaymentMethod = 'cash' | 'card' | 'domiciled' | 'transfer';
+
 
 export interface Movement {
   id: string;
