@@ -42,15 +42,61 @@ export default class MovementForm implements OnInit {
     note: ['']
   });
 
-  readonly conceptPresets: ConceptPreset[] = [
-    { label: 'Alquiler', icon: '🏠' },
-    { label: 'Supermercado', icon: '🛒' },
-    { label: 'Gasolina', icon: '⛽' },
-    { label: 'Restaurante', icon: '🍔' },
-    { label: 'Netflix', icon: '🎬' },
-    { label: 'Transporte', icon: '🚌' },
-    { label: 'Ahorro', icon: '💰' },
-  ];
+
+readonly conceptPresets: ConceptPreset[] = [
+  // Vivienda
+  { label: 'Alquiler', icon: '🏠' },
+  { label: 'Hipoteca', icon: '🏡' },
+  { label: 'Hogar', icon: '🛋️' },
+
+  // Suministros
+  { label: 'Luz', icon: '💡' },
+  { label: 'Agua', icon: '🚿' },
+  { label: 'Gas', icon: '🔥' },
+
+  // Servicios
+  { label: 'Internet y móvil', icon: '📶' },
+  { label: 'Suscripciones', icon: '🔁' },
+
+  // Alimentación
+  { label: 'Supermercado', icon: '🛒' },
+  { label: 'Comida', icon: '🍽️' },
+  { label: 'Restaurante', icon: '🍔' },
+
+  // Transporte
+  { label: 'Gasolina', icon: '⛽' },
+  { label: 'Transporte', icon: '🚌' },
+  { label: 'Coche', icon: '🚗' },
+
+  // Salud
+  { label: 'Salud', icon: '🩺' },
+
+  // Personal
+  { label: 'Ropa', icon: '👕' },
+  { label: 'Compras', icon: '🛍️' },
+
+  // Ocio
+  { label: 'Cine', icon: '🎬' },
+  { label: 'Fiesta', icon: '🎉' },
+
+  // Social
+  { label: 'Regalos', icon: '🎁' },
+
+  // Educación / familia ⭐
+  { label: 'Educación', icon: '🎓' },
+  { label: 'Guardería', icon: '🧸' },
+
+  // Viajes
+  { label: 'Viajes', icon: '✈️' },
+
+  // Finanzas
+  { label: 'Seguro', icon: '🛡️' },
+  { label: 'Impuestos', icon: '🏦' },
+  { label: 'Ahorro', icon: '💰' },
+];
+
+
+
 
   readonly conceptValue = toSignal(
     this.movementForm.controls.concept.valueChanges,
