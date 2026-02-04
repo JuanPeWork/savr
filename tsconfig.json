@@ -8,7 +8,8 @@
       "@domain/*": ["./src/app/domain/*"],
       "@core/*": ["./src/app/core/*"],
       "@utils/*": ["./src/app/utils/*"],
-      "@state/*": ["./src/app/state/*"]
+      "@state/*": ["./src/app/state/*"],
+      "@shared/*": ["./src/app/shared/*"]
     },
     "strict": true,
     "noImplicitOverride": true,
