@@ -9,10 +9,12 @@
       </p>
 
       <div class="modal-action">
-        <button class="btn" (click)="alertConfirm.cancel()">
-          Cancelar
-        </button>
-        <button class="btn btn-error" (click)="alertConfirm.confirm()">
+        @if (alertConfirm.state()!.cancelText !== undefined) {
+          <button class="btn" (click)="alertConfirm.cancel()">
+            {{ alertConfirm.state()!.cancelText }}
+          </button>
+        }
+        <button class="btn {{ btnClass() }}" (click)="alertConfirm.confirm()">
           {{ alertConfirm.state()!.confirmText ?? 'Confirmar' }}
         </button>
       </div>
