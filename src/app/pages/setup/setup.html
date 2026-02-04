@@ -27,7 +27,7 @@
           </label>
 
           <input type="number" formControlName="amount" placeholder="Ej. 1800"
-            class="input input-bordered w-full input-xl" />
+            class="input input-bordered w-full input-xl" selectOnFocus />
           @if (formUtils.isValidField(setupForm, 'amount')) {
           <span class="text-error">
             {{ formUtils.getFieldError(setupForm, 'amount') }}
@@ -43,7 +43,7 @@
             <label class="label">
               <span class="text-lg font-medium mb-1">Fijos</span>
             </label>
-            <input type="number" formControlName="fixed" class="input input-bordered input-lg" />
+            <input type="number" formControlName="fixed" class="input input-bordered input-lg" selectOnFocus />
             @if (formUtils.isValidField(setupForm.controls.distribution, 'fixed')) {
             <span class="text-error">
               {{ formUtils.getFieldError(setupForm.controls.distribution, 'fixed') }}
@@ -56,7 +56,7 @@
             <label class="label">
               <span class="text-lg font-medium mb-1">Variables</span>
             </label>
-            <input type="number" formControlName="variable" class="input input-bordered input-lg" />
+            <input type="number" formControlName="variable" class="input input-bordered input-lg" selectOnFocus />
             @if (formUtils.isValidField(setupForm.controls.distribution, 'variable')) {
             <span class="text-error">
               {{ formUtils.getFieldError(setupForm.controls.distribution, 'variable') }}
@@ -70,7 +70,7 @@
             <label class="label">
               <span class="text-lg font-medium mb-1">Ocio</span>
             </label>
-            <input type="number" formControlName="leisure" class="input input-bordered input-lg" />
+            <input type="number" formControlName="leisure" class="input input-bordered input-lg" selectOnFocus />
             @if (formUtils.isValidField(setupForm.controls.distribution, 'leisure')) {
             <span class="text-error">
               {{ formUtils.getFieldError(setupForm, 'leisure') }}
@@ -84,7 +84,7 @@
             <label class="label">
               <span class="text-lg font-medium mb-1">Ahorro</span>
             </label>
-            <input type="number" formControlName="savings" class="input input-bordered input-lg" />
+            <input type="number" formControlName="savings" class="input input-bordered input-lg" selectOnFocus />
             @if (formUtils.isValidField(setupForm.controls.distribution, 'savings')) {
             <span class="text-error">
               {{ formUtils.getFieldError(setupForm, 'savings') }}

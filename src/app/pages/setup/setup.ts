@@ -6,10 +6,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SalaryState } from '@state/finance/salary.state';
 import { Salary } from '@domain/finance/interfaces/salary.interface';
+import { SelectOnFocusDirective } from '@shared/directives/select-on-focus.directive';
 
 @Component({
   selector: 'app-setup',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SelectOnFocusDirective],
   templateUrl: './setup.html',
   styleUrl: './setup.css'
 })

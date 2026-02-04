@@ -11,10 +11,11 @@ import { Location } from '@angular/common';
 import { ToastService } from '@core/ui/toast/toast.service';
 import { EmojiPicker } from "src/app/shared/components/emoji-picker/emoji-picker";
 import { ConceptPreset } from '@domain/finance/interfaces/concept-preset.interface';
+import { SelectOnFocusDirective } from '@shared/directives/select-on-focus.directive';
 
 @Component({
   selector: 'app-movement-form',
-  imports: [ReactiveFormsModule, EmojiPicker],
+  imports: [ReactiveFormsModule, EmojiPicker, SelectOnFocusDirective],
   templateUrl: './movement-form.html',
   styleUrl: './movement-form.css'
 })

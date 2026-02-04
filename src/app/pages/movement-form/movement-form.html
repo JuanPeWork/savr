@@ -35,7 +35,7 @@
           </div>
           <div class="form-control w-1/2">
             <input type="number" formControlName="amount" placeholder="Ej. 1800"
-              class="input input-bordered w-full input-xl" />
+              class="input input-bordered w-full input-xl" selectOnFocus />
               <span class="text-error text-sm block h-5">
                 @if (formUtils.isValidField(movementForm, 'amount')) {
                   {{ formUtils.getFieldError(movementForm, 'amount') }}
