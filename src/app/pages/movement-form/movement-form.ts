@@ -9,6 +9,7 @@ import { SalaryState } from '../../state/finance/salary.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ToastService } from '@core/ui/toast/toast.service';
+import { AlertService } from '@core/ui/alert/alert.service';
 import { EmojiPicker } from "src/app/shared/components/emoji-picker/emoji-picker";
 import { ConceptPreset } from '@domain/finance/interfaces/concept-preset.interface';
 import { SelectOnFocusDirective } from '@shared/directives/select-on-focus.directive';
@@ -27,6 +28,7 @@ export default class MovementForm implements OnInit {
   private movementState = inject(MovementState);
   private router = inject(Router);
   private toast = inject(ToastService);
+  private alert = inject(AlertService);
   private fb = inject(FormBuilder);
 
   readonly isEditMode = signal(false);
@@ -40,7 +42,8 @@ export default class MovementForm implements OnInit {
     concept: ['', [Validators.required, Validators.minLength(3)]],
     paymentMethod: ['card', Validators.required],
     date: ['', Validators.required],
-    note: ['']
+    note: [''],
+    isRecurring: [false]
   });
 
 
@@ -71,6 +74,7 @@ readonly conceptPresets: ConceptPreset[] = [
 
   // Salud
   { label: 'Salud', icon: '🩺' },
+  { label: 'Gimnasio', icon: '🏋🏽‍♂️' },
 
   // Personal
   { label: 'Ropa', icon: '👕' },
@@ -148,7 +152,8 @@ readonly conceptPresets: ConceptPreset[] = [
       concept: movement.concept,
       paymentMethod: movement.paymentMethod,
       date: movement.date,
-      note: movement.note ?? ''
+      note: movement.note ?? '',
+      isRecurring: movement.isRecurring ?? false
     });
   }
 
@@ -176,7 +181,8 @@ readonly conceptPresets: ConceptPreset[] = [
       icon: this.icon(),
       concept: formValue.concept,
       date: dayjs(formValue.date).format('YYYY-MM-DD'),
-      note: formValue.note
+      note: formValue.note,
+      isRecurring: formValue.isRecurring
     };
 
     if (this.isEditMode()) {
@@ -192,6 +198,15 @@ readonly conceptPresets: ConceptPreset[] = [
 
   goBack() {
     this.location.back();
+  }
+
+  showRecurringInfo() {
+    this.alert.open({
+      title: 'Movimiento recurrente',
+      message: 'Al marcarlo, este movimiento se copiará automáticamente al crear el siguiente sueldo.',
+      confirmText: 'Entendido',
+      variant: 'info'
+    });
   }
 
 }

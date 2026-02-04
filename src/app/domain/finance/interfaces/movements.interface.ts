@@ -14,4 +14,5 @@ export interface Movement {
   concept: string;
   date: string;
   note?: string;
+  isRecurring?: boolean;
 }

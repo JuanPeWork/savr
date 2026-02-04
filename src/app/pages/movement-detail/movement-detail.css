@@ -13,77 +13,14 @@
 }
 
 .ticket-body {
-  background: oklch(var(--b1));
   padding: 2rem 1.5rem;
   position: relative;
 }
 
-/* Bordes laterales con muescas */
-.ticket-body::before,
-.ticket-body::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 12px;
-  background-image: radial-gradient(circle at 0 50%, transparent 8px, oklch(var(--b1)) 8px);
-  background-size: 12px 24px;
-  background-repeat: repeat-y;
-}
-
-.ticket-body::before {
-  left: -6px;
-  background-position: 0 12px;
-}
-
-.ticket-body::after {
-  right: -6px;
-  background-image: radial-gradient(circle at 100% 50%, transparent 8px, oklch(var(--b1)) 8px);
-  background-position: 0 12px;
-}
-
-/* Bordes superior e inferior con muescas */
 .ticket-edge {
   height: 16px;
-  background: oklch(var(--b1));
-  position: relative;
 }
 
-.ticket-edge-top {
-  border-radius: 12px 12px 0 0;
-}
-
-.ticket-edge-top::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 12px;
-  right: 12px;
-  height: 16px;
-  background-image: radial-gradient(circle at 50% 0, transparent 8px, oklch(var(--b1)) 8px);
-  background-size: 24px 16px;
-  background-repeat: repeat-x;
-  background-position: center;
-}
-
-.ticket-edge-bottom {
-  border-radius: 0 0 12px 12px;
-}
-
-.ticket-edge-bottom::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: 12px;
-  right: 12px;
-  height: 16px;
-  background-image: radial-gradient(circle at 50% 100%, transparent 8px, oklch(var(--b1)) 8px);
-  background-size: 24px 16px;
-  background-repeat: repeat-x;
-  background-position: center;
-}
-
-/* Separador punteado */
 .divider-dashed {
   border-top: 2px dashed gray;
 }

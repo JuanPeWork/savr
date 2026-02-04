@@ -2,6 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { Movement } from '@domain/finance/interfaces/movements.interface';
 import { SalaryState } from './salary.state';
 import { STORAGE } from 'src/app/app.config';
+import dayjs from 'dayjs';
 
 const STORAGE_KEY = 'movements'
 
@@ -74,6 +75,24 @@ export class MovementState {
   reset() {
     this._movements.set([]);
     this.storageService.remove(STORAGE_KEY);
+  }
+
+  async copyRecurringMovements(fromSalaryId: string, toSalaryId: string) {
+    const recurring = this._movements().filter(
+      m => m.salaryId === fromSalaryId && m.isRecurring
+    );
+
+    const copies = recurring.map(m => ({
+      ...m,
+      id: crypto.randomUUID(),
+      salaryId: toSalaryId,
+      date: dayjs().toISOString(),
+    }));
+
+    if (copies.length > 0) {
+      this._movements.update(list => [...list, ...copies]);
+      await this.persist();
+    }
   }
 
 }

@@ -5,6 +5,7 @@ import { FormUtils } from '@utils/form-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SalaryState } from '@state/finance/salary.state';
+import { MovementState } from '@state/finance/movement.state';
 import { Salary } from '@domain/finance/interfaces/salary.interface';
 import { SelectOnFocusDirective } from '@shared/directives/select-on-focus.directive';
 
@@ -20,6 +21,7 @@ export default class Setup implements OnInit {
   private route = inject(ActivatedRoute);
   private location = inject(Location);
   private salaryState = inject(SalaryState);
+  private movementState = inject(MovementState);
   private router = inject(Router);
 
   formUtils = FormUtils;
@@ -73,12 +75,18 @@ export default class Setup implements OnInit {
       };
       this.salaryState.update(updatedSalary);
     } else {
+      const previousSalary = this.salaryState.activeSalary();
+
       const newSalary: Salary = {
         ...formValue,
         id: crypto.randomUUID(),
         date: dayjs().toISOString(),
       };
       this.salaryState.create(newSalary);
+
+      if (previousSalary) {
+        this.movementState.copyRecurringMovements(previousSalary.id, newSalary.id);
+      }
     }
 
     this.router.navigate(['finance-space']);

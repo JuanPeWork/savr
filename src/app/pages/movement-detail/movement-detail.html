@@ -2,15 +2,15 @@
   <nav class="nav-header">
     <button (click)="goBack()" class="btn-back text-white">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z"/>
+        <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z" />
       </svg>
     </button>
   </nav>
 
   <div class="flex-1 flex flex-col justify-center items-center px-4 pb-6">
-  @if (movement(); as mov) {
+    @if (movement(); as mov) {
     <div class="ticket">
-      <div class="ticket-edge ticket-edge-top"></div>
+      <div class="ticket-edge"></div>
       <div class="ticket-body">
         <div class="text-center mb-8">
           <div class="text-5xl mb-3">{{ categoryConfig[mov.category].icon }}</div>
@@ -26,17 +26,24 @@
           </div>
           <div class="text-right">
             <p class="text-xs opacity-50 uppercase tracking-wide">Cantidad</p>
-            <p class="font-semibold text-xl" [class.text-success]="mov.type === 'income'" [class.text-error]="mov.type === 'expense'">
+            <p class="font-semibold text-xl" [class.text-success]="mov.type === 'income'"
+              [class.text-error]="mov.type === 'expense'">
               {{ mov.type === 'income' ? '+' : '-' }}{{ mov.amount | number:'1.2-2' }} €
             </p>
           </div>
         </div>
 
-        <div class="mb-6">
-          <p class="text-xs opacity-50 uppercase tracking-wide">Fecha</p>
-          <p class="font-semibold">{{ mov.date | date:'d MMMM yyyy' }}</p>
+        <div class="grid grid-cols-2 gap-4 my-6">
+          <div>
+            <p class="text-xs opacity-50 uppercase tracking-wide">Fecha</p>
+            <p class="font-semibold">{{ mov.date | date:'d MMMM yyyy' }}</p>
+          </div>
+          <div class="flex justify-end items-end">
+            @if (mov.isRecurring) {
+              <p class="badge badge-dash badge-info text-sm uppercase tracking-wide font-semibold">🔁 Recurrente</p>
+            }
+          </div>
         </div>
-
         <div class="bg-base-200 rounded-lg p-4 flex items-center gap-3">
           <span class="text-2xl">{{ paymentConfig[mov.paymentMethod].icon }}</span>
           <div>
@@ -46,10 +53,10 @@
         </div>
 
         @if (mov.note) {
-          <div class="mt-6">
-            <p class="text-xs opacity-50 uppercase tracking-wide">Nota</p>
-            <p class="text-sm mt-1">{{ mov.note }}</p>
-          </div>
+        <div class="mt-6">
+          <p class="text-xs opacity-50 uppercase tracking-wide">Nota</p>
+          <p class="text-sm mt-1">{{ mov.note }}</p>
+        </div>
         }
 
         <div class="divider-dashed mt-6"></div>
@@ -59,7 +66,7 @@
         </div>
       </div>
 
-      <div class="ticket-edge ticket-edge-bottom"></div>
+      <div class="ticket-edge"></div>
     </div>
 
     <div class="flex gap-3 w-full max-w-87.5 mt-4">
@@ -70,10 +77,10 @@
         Editar
       </button>
     </div>
-  } @else {
+    } @else {
     <div class="text-center">
       <p class="text-lg opacity-60">Movimiento no encontrado</p>
     </div>
-  }
+    }
   </div>
 </div>
