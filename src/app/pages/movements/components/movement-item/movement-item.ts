@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { Movement } from '@domain/finance/interfaces/movements.interface';
 
 @Component({
   selector: 'movement-item',
-  imports: [RouterLink],
+  imports: [RouterLink, DecimalPipe],
   templateUrl: './movement-item.html',
   styleUrl: './movement-item.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

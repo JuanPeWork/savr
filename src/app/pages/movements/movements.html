@@ -7,7 +7,7 @@
       <h3 class="card-title opacity-70">Saldo actual</h3>
 
       <h1 class="text-5xl font-semibold">
-        {{ financeState.balance() }} €
+        {{ financeState.balance() | number:'1.2-2' }} €
       </h1>
 
       <h4 class="text-sm font-semibold opacity-60 capitalize">
