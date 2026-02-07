@@ -9,7 +9,8 @@
       "@core/*": ["./src/app/core/*"],
       "@utils/*": ["./src/app/utils/*"],
       "@state/*": ["./src/app/state/*"],
-      "@shared/*": ["./src/app/shared/*"]
+      "@shared/*": ["./src/app/shared/*"],
+      "@env": ["./src/environments/environment.ts"]
     },
     "strict": true,
     "noImplicitOverride": true,
