@@ -4,7 +4,7 @@ import { StoragePort } from './storage-port.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class LocalStorageService implements StoragePort{
+export class LocalStorageService implements StoragePort {
 
   async get<T>(key: string): Promise<T | null> {
     const value = localStorage.getItem(key);
@@ -12,8 +12,7 @@ export class LocalStorageService implements StoragePort{
   }
 
   async set<T>(key: string, value: T): Promise<void> {
-    console.log('Guardamos localstorage')
-    localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(key, JSON.stringify(value));
   }
 
   async remove(key: string): Promise<void> {
