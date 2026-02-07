@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { financeInitGuard } from '@core/guards/finance-init.guard';
+import { welcomeGuard } from '@core/guards/welcome.guard';
 
 export const routes: Routes = [
   {
@@ -9,6 +10,7 @@ export const routes: Routes = [
   },
   {
     path: 'welcome',
+    canActivate: [welcomeGuard],
     loadComponent: () =>
       import('./pages/welcome/welcome'),
   },
