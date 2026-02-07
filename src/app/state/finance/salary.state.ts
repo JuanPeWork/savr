@@ -1,15 +1,18 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
 
 import { Salary } from "@domain/finance/interfaces/salary.interface";
-import { STORAGE } from "src/app/app.config";
+import { SALARY_COLLECTION } from "@core/storage/collection.tokens";
+import { LocalStorageService } from "@core/storage/local-storage.service";
+import { AuthService } from "@core/auth/auth.service";
 
-const STORAGE_KEY = 'finance_space';
 const SELECTED_KEY = 'selected_salary_id';
 
 @Injectable({ providedIn: 'root' })
 export class SalaryState {
 
-  private storageService = inject(STORAGE);
+  private collection = inject(SALARY_COLLECTION);
+  private storage = inject(LocalStorageService);
+  private authService = inject(AuthService);
 
   private readonly _salaries = signal<Salary[]>([]);
   private readonly _selectedId = signal<string | null>(null);
@@ -27,39 +30,49 @@ export class SalaryState {
       if (selected) return selected;
     }
 
-    return list[list.length - 1];
+    return [...list].sort((a, b) => b.date.localeCompare(a.date))[0];
   });
 
   private _initPromise?: Promise<void>;
+  private _loadedForUid?: string | null;
 
-  constructor() {
-    this._initPromise = this.init();
-  }
+  async ready(): Promise<void> {
+    const currentUid = this.authService.currentUid;
+    if (!currentUid) return;
 
-  ready(): Promise<void> {
-    return this._initPromise ?? Promise.resolve();
+    if (this._loadedForUid !== currentUid) {
+      this._initPromise = undefined;
+      this._salaries.set([]);
+      this._selectedId.set(null);
+    }
+
+    if (!this._initPromise) {
+      this._loadedForUid = currentUid;
+      this._initPromise = this.init();
+    }
+    return this._initPromise;
   }
 
   async create(salary: Salary) {
+    await this.collection.create(salary);
     this._salaries.update((s) => [...s, salary]);
-    await this.storageService.set<Salary[]>(STORAGE_KEY, this._salaries());
     await this.select(salary.id);
   }
 
   async update(salary: Salary) {
+    await this.collection.update(salary);
     this._salaries.update((list) =>
       list.map((s) => s.id === salary.id ? salary : s)
     );
-    await this.storageService.set<Salary[]>(STORAGE_KEY, this._salaries());
   }
 
   async delete(id: string) {
+    await this.collection.delete(id);
     this._salaries.update((list) => list.filter((s) => s.id !== id));
-    await this.storageService.set<Salary[]>(STORAGE_KEY, this._salaries());
 
     if (this._selectedId() === id) {
       this._selectedId.set(null);
-      await this.storageService.remove(SELECTED_KEY);
+      await this.storage.remove(SELECTED_KEY);
     }
   }
 
@@ -69,12 +82,12 @@ export class SalaryState {
 
   async select(id: string) {
     this._selectedId.set(id);
-    await this.storageService.set<string>(SELECTED_KEY, id);
+    await this.storage.set<string>(SELECTED_KEY, id);
   }
 
   private async init() {
-    const stored = await this.storageService.get<Salary[]>(STORAGE_KEY);
-    const selectedId = await this.storageService.get<string>(SELECTED_KEY);
+    const stored = await this.collection.getAll();
+    const selectedId = await this.storage.get<string>(SELECTED_KEY);
 
     if (stored && Array.isArray(stored)) {
       this._salaries.set(stored);
@@ -85,11 +98,17 @@ export class SalaryState {
     }
   }
 
-  reset() {
+  async reset() {
     this._salaries.set([]);
     this._selectedId.set(null);
-    this.storageService.remove(STORAGE_KEY);
-    this.storageService.remove(SELECTED_KEY);
+    await this.collection.clear();
+    await this.storage.remove(SELECTED_KEY);
   }
 
+  clearLocal() {
+    this._salaries.set([]);
+    this._selectedId.set(null);
+    this._initPromise = undefined;
+    this._loadedForUid = undefined;
+  }
 }

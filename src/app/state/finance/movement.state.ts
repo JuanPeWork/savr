@@ -1,21 +1,20 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Movement } from '@domain/finance/interfaces/movements.interface';
 import { SalaryState } from './salary.state';
-import { STORAGE } from 'src/app/app.config';
+import { MOVEMENT_COLLECTION } from '@core/storage/collection.tokens';
+import { AuthService } from '@core/auth/auth.service';
 import dayjs from 'dayjs';
-
-const STORAGE_KEY = 'movements'
 
 @Injectable({ providedIn: 'root' })
 export class MovementState {
 
-  storageService = inject(STORAGE);
+  private collection = inject(MOVEMENT_COLLECTION);
   private readonly salaryState = inject(SalaryState);
+  private authService = inject(AuthService);
 
   private readonly _movements = signal<Movement[]>([]);
   readonly movements = this._movements.asReadonly();
   readonly total = computed(() => this._movements().reduce((sum, m) => sum + m.amount, 0));
-
 
   readonly movementsOfActiveSalary = computed(() => {
     const salary = this.salaryState.activeSalary();
@@ -31,50 +30,62 @@ export class MovementState {
   }
 
   private _initPromise?: Promise<void>;
-
-  constructor() {
-    this._initPromise = this.init();
-  }
+  private _loadedForUid?: string | null;
 
   async add(movement: Movement) {
+    await this.collection.create(movement);
     this._movements.update(list => [...list, movement]);
-    await this.persist();
   }
 
   private async init(): Promise<void> {
-    const stored = await this.storageService.get<Movement[]>(STORAGE_KEY);
+    const stored = await this.collection.getAll();
     if (!stored) return;
     this._movements.set(stored);
   }
 
-  ready(): Promise<void> {
-    return this._initPromise ?? Promise.resolve();
+  async ready(): Promise<void> {
+    const currentUid = this.authService.currentUid;
+    if (!currentUid) return;
+
+    if (this._loadedForUid !== currentUid) {
+      this._initPromise = undefined;
+      this._movements.set([]);
+    }
+
+    if (!this._initPromise) {
+      this._loadedForUid = currentUid;
+      this._initPromise = this.init();
+    }
+    return this._initPromise;
   }
 
-  remove(id: string) {
+  async remove(id: string) {
+    await this.collection.delete(id);
     this._movements.update(list => list.filter(m => m.id !== id));
-    this.persist();
   }
 
   async removeBySalaryId(salaryId: string) {
+    const toRemove = this._movements().filter(m => m.salaryId === salaryId);
+    await this.collection.deleteBatch(toRemove.map(m => m.id));
     this._movements.update(list => list.filter(m => m.salaryId !== salaryId));
-    await this.persist();
   }
 
   async update(movement: Movement) {
+    await this.collection.update(movement);
     this._movements.update(
       list => list.map(m => m.id === movement.id ? movement : m)
     );
-    await this.persist()
   }
 
-  private persist() {
-    this.storageService.set(STORAGE_KEY, this._movements())
-  }
-
-  reset() {
+  async reset() {
     this._movements.set([]);
-    this.storageService.remove(STORAGE_KEY);
+    await this.collection.clear();
+  }
+
+  clearLocal() {
+    this._movements.set([]);
+    this._initPromise = undefined;
+    this._loadedForUid = undefined;
   }
 
   async copyRecurringMovements(fromSalaryId: string, toSalaryId: string) {
@@ -90,9 +101,8 @@ export class MovementState {
     }));
 
     if (copies.length > 0) {
+      await this.collection.createBatch(copies as Movement[]);
       this._movements.update(list => [...list, ...copies]);
-      await this.persist();
     }
   }
-
 }
