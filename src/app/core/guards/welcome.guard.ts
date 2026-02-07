@@ -10,17 +10,22 @@ export const welcomeGuard = async () => {
   const movementState = inject(MovementState);
   const router = inject(Router);
 
-  const user = await authService.waitForAuthState();
+  try {
+    const user = await authService.waitForAuthState();
 
-  if (!user) {
+    if (!user) {
+      return true;
+    }
+
+    await Promise.all([salaryState.ready(), movementState.ready()]);
+
+    if (salaryState.hasAnySalary()) {
+      return router.createUrlTree(['/finance-space']);
+    }
+
+    return router.createUrlTree(['/setup']);
+  } catch (error) {
+    console.error('[Guard] Error in welcomeGuard:', error);
     return true;
   }
-
-  await Promise.all([salaryState.ready(), movementState.ready()]);
-
-  if (salaryState.hasAnySalary()) {
-    return router.createUrlTree(['/finance-space']);
-  }
-
-  return router.createUrlTree(['/setup']);
 };

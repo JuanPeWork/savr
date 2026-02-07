@@ -10,13 +10,18 @@ export const financeInitGuard = async () => {
   const movementState = inject(MovementState);
   const router = inject(Router);
 
-  const user = await authService.waitForAuthState();
+  try {
+    const user = await authService.waitForAuthState();
 
-  if (!user) {
+    if (!user) {
+      return router.createUrlTree(['/welcome']);
+    }
+
+    await Promise.all([salaryState.ready(), movementState.ready()]);
+
+    return salaryState.hasAnySalary() ? true : router.createUrlTree(['/setup']);
+  } catch (error) {
+    console.error('[Guard] Error in financeInitGuard:', error);
     return router.createUrlTree(['/welcome']);
   }
-
-  await Promise.all([salaryState.ready(), movementState.ready()]);
-
-  return salaryState.hasAnySalary() ? true : router.createUrlTree(['/setup']);
 };

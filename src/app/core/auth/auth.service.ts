@@ -9,13 +9,16 @@ import {
   signInWithPopup,
   signInWithCredential,
   signOut,
-  AuthError
+  AuthError,
+  AuthCredential
 } from 'firebase/auth';
+import { ToastService } from '@core/ui/toast/toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
   private readonly auth = inject(Auth);
+  private readonly toastService = inject(ToastService);
   private readonly provider = new GoogleAuthProvider();
 
   private readonly user$ = user(this.auth);
@@ -41,15 +44,27 @@ export class AuthService {
   }
 
   async signInAnonymously() {
-    await signInAnonymously(this.auth);
+    try {
+      await signInAnonymously(this.auth);
+    } catch (error) {
+      console.error('[Auth] Error signing in anonymously:', error);
+      this.toastService.show('Error al iniciar sesión');
+      throw error;
+    }
   }
 
   async signInWithGoogle() {
-    const result = await signInWithPopup(this.auth, this.provider);
-    return result.user;
+    try {
+      const result = await signInWithPopup(this.auth, this.provider);
+      return result.user;
+    } catch (error) {
+      console.error('[Auth] Error signing in with Google:', error);
+      this.toastService.show('Error al iniciar sesión con Google');
+      throw error;
+    }
   }
 
-  private pendingCredential: any = null;
+  private pendingCredential: AuthCredential | null = null;
 
   async linkWithGoogle(): Promise<'linked' | 'needs-confirmation'> {
     const currentUser = this.auth.currentUser;
@@ -64,17 +79,31 @@ export class AuthService {
         this.pendingCredential = GoogleAuthProvider.credentialFromError(authError);
         return 'needs-confirmation';
       }
+      console.error('[Auth] Error linking with Google:', error);
+      this.toastService.show('Error al vincular con Google');
       throw error;
     }
   }
 
   async confirmSwitchToExistingAccount(): Promise<void> {
     if (!this.pendingCredential) throw new Error('No pending credential');
-    await signInWithCredential(this.auth, this.pendingCredential);
-    this.pendingCredential = null;
+    try {
+      await signInWithCredential(this.auth, this.pendingCredential);
+      this.pendingCredential = null;
+    } catch (error) {
+      console.error('[Auth] Error switching account:', error);
+      this.toastService.show('Error al cambiar de cuenta');
+      throw error;
+    }
   }
 
   async logout() {
-    await signOut(this.auth);
+    try {
+      await signOut(this.auth);
+    } catch (error) {
+      console.error('[Auth] Error logging out:', error);
+      this.toastService.show('Error al cerrar sesión');
+      throw error;
+    }
   }
 }
