@@ -1,22 +1,55 @@
 <div class="page-layout">
 
-  <div class="card-base">
-    <div class="card-body py-6 flex flex-col items-center gap-2">
-      <div class="text-5xl">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
-          <path fill="currentColor"
-            d="M19.14 12.94c.04-.31.06-.63.06-.94c0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6s3.6 1.62 3.6 3.6s-1.62 3.6-3.6 3.6" />
-        </svg>
-      </div>
-      <h2 class="text-xl font-semibold">Configuración</h2>
-      <p class="text-sm opacity-60">Gestiona los ajustes de la aplicación</p>
+  <div class="card-base overflow-hidden">
+    <div class="card-body py-5 flex flex-col gap-1">
+      <h3 class="card-title opacity-70">Configuración</h3>
+      <h1 class="text-5xl font-semibold">Ajustes</h1>
+      <h4 class="text-sm font-semibold opacity-60">Gestiona los ajustes de la aplicación</h4>
     </div>
   </div>
 
   <div class="card-base">
     <div class="card-body">
       <ul class="space-y-3">
-        <li (click)="clearAllData()" class="list-item-interactive">
+
+        @if (isAnonymous()) {
+          <li (click)="linkWithGoogle()" class="list-item-interactive">
+            <div class="flex items-center gap-3">
+              <div class="avatar placeholder">
+                <div class="avatar-icon bg-primary/20 text-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972a6.033 6.033 0 1 1 0-12.064c1.498 0 2.866.549 3.921 1.453l2.814-2.814A9.969 9.969 0 0 0 12.545 2C7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <p class="text-lg font-medium leading-tight">Vincular con Google</p>
+                <p class="text-sm opacity-60">Guarda tus datos de forma segura</p>
+              </div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="opacity-40">
+              <path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6z" />
+            </svg>
+          </li>
+        } @else {
+          <li class="list-item-interactive opacity-60 cursor-default">
+            <div class="flex items-center gap-3">
+              <div class="avatar placeholder">
+                <div class="avatar-icon bg-success/20 text-success">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19L21 7l-1.41-1.41z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <p class="text-lg font-medium leading-tight">Cuenta vinculada</p>
+                <p class="text-sm opacity-60">{{ userEmail() }}</p>
+              </div>
+            </div>
+          </li>
+        }
+
+        <li (click)="resetFinanceSpace()" class="list-item-interactive">
           <div class="flex items-center gap-3">
             <div class="avatar placeholder">
               <div class="avatar-icon bg-error/20 text-error">
@@ -27,14 +60,51 @@
               </div>
             </div>
             <div>
-              <p class="text-lg font-medium leading-tight">Borrar datos</p>
-              <p class="text-sm opacity-60">Elimina todos los sueldos y movimientos</p>
+              <p class="text-lg font-medium leading-tight">Borrar espacio financiero</p>
+              <p class="text-sm opacity-60">Elimina todos los datos y cierra sesión</p>
             </div>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="opacity-40">
             <path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6z" />
           </svg>
         </li>
+
+        @if (isAnonymous()) {
+          <li class="list-item-interactive opacity-40 cursor-not-allowed">
+            <div class="flex items-center gap-3">
+              <div class="avatar placeholder">
+                <div class="avatar-icon bg-warning/20 text-warning">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <p class="text-lg font-medium leading-tight">Cerrar sesión</p>
+                <p class="text-sm opacity-60">Vincula tu cuenta para poder cerrar sesión</p>
+              </div>
+            </div>
+          </li>
+        } @else {
+          <li (click)="logout()" class="list-item-interactive">
+            <div class="flex items-center gap-3">
+              <div class="avatar placeholder">
+                <div class="avatar-icon bg-warning/20 text-warning">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <p class="text-lg font-medium leading-tight">Cerrar sesión</p>
+                <p class="text-sm opacity-60">Salir de tu cuenta actual</p>
+              </div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="opacity-40">
+              <path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6z" />
+            </svg>
+          </li>
+        }
       </ul>
     </div>
   </div>
