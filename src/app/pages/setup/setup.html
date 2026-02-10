@@ -100,7 +100,10 @@
             }
         </div>
 
-        <button type="submit" class="btn btn-primary w-full btn-xl">
+        <button type="submit" class="btn btn-primary w-full btn-xl" [disabled]="submitting()">
+          @if (submitting()) {
+            <span class="loading loading-spinner loading-sm"></span>
+          }
           {{ isEditMode() ? 'Actualizar' : 'Continuar' }}
         </button>
 

@@ -59,11 +59,15 @@ export default class Setup implements OnInit {
     });
   }
 
-  onSumit() {
+  readonly submitting = signal(false);
+
+  async onSumit() {
     const isValid = this.setupForm.valid;
     this.setupForm.markAllAsTouched();
 
-    if (!isValid) return;
+    if (!isValid || this.submitting()) return;
+
+    this.submitting.set(true);
 
     const formValue = this.setupForm.getRawValue();
 
@@ -73,7 +77,7 @@ export default class Setup implements OnInit {
         id: this.editingId!,
         date: this.salaryState.getById(this.editingId!)!.date,
       };
-      this.salaryState.update(updatedSalary);
+      await this.salaryState.update(updatedSalary);
     } else {
       const previousSalary = this.salaryState.activeSalary();
 
@@ -82,10 +86,10 @@ export default class Setup implements OnInit {
         id: crypto.randomUUID(),
         date: dayjs().toISOString(),
       };
-      this.salaryState.create(newSalary);
+      await this.salaryState.create(newSalary);
 
       if (previousSalary) {
-        this.movementState.copyRecurringMovements(previousSalary.id, newSalary.id);
+        await this.movementState.copyRecurringMovements(previousSalary.id, newSalary.id);
       }
     }
 
