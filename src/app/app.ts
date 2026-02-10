@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Toast } from "./shared/components/toast/toast";
 import { Alert } from "./shared/components/alert/alert";
+import { UpdateService } from "./core/update/update.service";
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,10 @@ import { Alert } from "./shared/components/alert/alert";
 })
 export class App {
   protected readonly title = signal('savr');
+
+  private updateService = inject(UpdateService);
+
+  constructor() {
+    this.updateService.init();
+  }
 }
