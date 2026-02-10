@@ -1,0 +1,46 @@
+<div class="modal modal-open" (click)="closed.emit()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="flex items-center gap-3 mb-1">
+      <div class="rounded-full w-11 h-11 flex justify-center items-center text-2xl"
+           [ngClass]="[colorClasses().bg, colorClasses().text]">
+        <span>{{ config().icon }}</span>
+      </div>
+      <p class="text-lg font-semibold">{{ config().name }}</p>
+      <p class="text-2xl font-semibold ml-auto">{{ totalAmount() | amount:privacyState.hideAmounts() }}</p>
+    </div>
+
+
+    @if (breakdownItems().length > 0) {
+      <div class="divider text-md opacity-60 mt-5 mb-3">Distribución del gasto</div>
+
+      <ul class="flex flex-col gap-4">
+        @for (item of breakdownItems(); track item.concept) {
+          <li class="flex flex-col gap-1">
+            <div class="flex items-center gap-3">
+              <span class="text-xl w-8 text-center">{{ item.icon }}</span>
+              <span class="font-medium flex-1">{{ item.concept }}</span>
+              <span class="text-xs opacity-60">{{ percentage(item.amount) | number:'1.1-1' }}%</span>
+              <span class="font-semibold text-sm">{{ item.amount | amount:privacyState.hideAmounts() }}</span>
+            </div>
+            <div class="ml-11 h-2 rounded-full bg-base-300 overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-300"
+                   [ngClass]="colorClasses().bar"
+                   [style.width.%]="percentage(item.amount)">
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="text-center py-8 opacity-50">
+        <p>No hay gastos en esta categoría</p>
+      </div>
+    }
+
+    <div class="modal-action">
+      <button class="btn btn-block" (click)="closed.emit()">Cerrar</button>
+    </div>
+
+  </div>
+</div>

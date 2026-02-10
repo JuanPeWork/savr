@@ -19,10 +19,22 @@
 
   <!-- Resumen de gastos por categoría -->
   <div class="grid grid-cols-2 gap-3">
-    <app-stat-card [stat]="fixedExpenses"/>
-    <app-stat-card [stat]="variableExpenses"/>
-    <app-stat-card [stat]="savingExpenses"/>
-    <app-stat-card [stat]="leisureExpenses"/>
+    <button (click)="selectedCategory.set('fixed')">
+      <app-stat-card [stat]="fixedExpenses"/>
+    </button>
+    <button (click)="selectedCategory.set('variable')">
+      <app-stat-card [stat]="variableExpenses"/>
+    </button>
+    <button (click)="selectedCategory.set('saving')">
+      <app-stat-card [stat]="savingExpenses"/>
+    </button>
+    <button (click)="selectedCategory.set('leisure')">
+      <app-stat-card [stat]="leisureExpenses"/>
+    </button>
   </div>
 
 </div>
+
+@if (selectedCategory(); as cat) {
+  <app-distribution-breakdown [category]="cat" (closed)="selectedCategory.set(null)"/>
+}
