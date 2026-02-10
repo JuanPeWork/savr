@@ -28,7 +28,7 @@
             <p class="text-xs opacity-50 uppercase tracking-wide">Cantidad</p>
             <p class="font-semibold text-xl" [class.text-success]="mov.type === 'income'"
               [class.text-error]="mov.type === 'expense'">
-              {{ mov.type === 'income' ? '+' : '-' }}{{ mov.amount | number:'1.2-2' }} €
+              @if (!privacyState.hideAmounts()) { {{ mov.type === 'income' ? '+' : '-' }} }{{ mov.amount | amount:privacyState.hideAmounts() }}
             </p>
           </div>
         </div>
@@ -40,7 +40,7 @@
           </div>
           <div class="flex justify-end items-end">
             @if (mov.isRecurring) {
-              <p class="badge badge-dash badge-info text-sm uppercase tracking-wide font-semibold">🔁 Recurrente</p>
+              <p class="badge badge-dash badge-info text-xs uppercase font-semibold">🔁 Recurrente</p>
             }
           </div>
         </div>
