@@ -1,6 +1,6 @@
 <div class="flex flex-col min-h-dvh bg-black/50">
   <nav class="nav-header">
-    <button (click)="goBack()" class="btn-back text-white">
+    <button (click)="goBack()" class="btn-back !text-white">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8l8 8l1.41-1.41L7.83 13H20z" />
       </svg>
@@ -13,7 +13,7 @@
       <div class="ticket-edge"></div>
       <div class="ticket-body">
         <div class="text-center mb-8">
-          <div class="text-5xl mb-3">{{ categoryConfig[mov.category].icon }}</div>
+          <div class="text-5xl mb-3">{{ mov.icon }}</div>
           <h1 class="text-2xl font-bold">{{ mov.concept }}</h1>
           <p class="text-sm opacity-60">{{ categoryConfig[mov.category].label }}</p>
         </div>
