@@ -5,7 +5,7 @@
       <div class="card-body py-5 flex flex-col gap-1">
         <h3 class="card-title opacity-70">Ahorro acumulado</h3>
         <h1 class="text-5xl font-semibold">
-          {{ totalSavings() | number:'1.2-2' }} €
+          {{ totalSavings() | amount:privacyState.hideAmounts() }}
         </h1>
       </div>
     </div>
@@ -18,7 +18,7 @@
           <div class="h-48">
             <canvas baseChart
               [data]="chartData()"
-              [options]="chartOptions"
+              [options]="chartOptions()"
               type="bar">
             </canvas>
           </div>
@@ -33,7 +33,7 @@
       <div class="card-body py-4">
         <p class="text-lg text-center">
           <span class="opacity-70">Ahorro medio:</span>
-          <span class="font-semibold">{{ averageSavings() | number:'1.2-2' }} €</span>
+          <span class="font-semibold">{{ averageSavings() | amount:privacyState.hideAmounts() }}</span>
         </p>
       </div>
     </div>
@@ -52,13 +52,13 @@
                   </div>
                 </div>
                 <div>
-                  <p class="text-lg font-medium leading-tight">{{ item.salary.amount | number:'1.2-2' }} €</p>
+                  <p class="text-lg font-medium leading-tight">{{ item.salary.amount | amount:privacyState.hideAmounts() }}</p>
                   <p class="text-sm opacity-60 capitalize">{{ item.salary.date | date:'MMMM yyyy' }}</p>
                 </div>
               </div>
               <div class="text-right">
                 <p class="text-lg font-semibold" [class.text-success]="item.saving > 0" [class.text-error]="item.saving < 0">
-                  {{ item.saving > 0 ? '+' : '' }}{{ item.saving | number:'1.2-2' }} €
+                  @if (!privacyState.hideAmounts()) { {{ item.saving > 0 ? '+' : '' }} }{{ item.saving | amount:privacyState.hideAmounts() }}
                 </p>
                 <p class="text-xs opacity-60">ahorro</p>
               </div>

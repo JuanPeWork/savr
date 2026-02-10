@@ -5,13 +5,15 @@ import { MovementItem } from "./components/movement-item/movement-item";
 import { MovementState } from '@state/finance/movement.state';
 import { FinanceState } from '../../state/finance/finance.state';
 import { MovementType } from '@domain/finance/interfaces/movements.interface';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
+import { AmountPipe } from '../../shared/pipes/amount.pipe';
+import { PrivacyState } from '../../state/ui/privacy.state';
 
 type FilterType = 'all' | MovementType;
 
 @Component({
   selector: 'app-movements',
-  imports: [MovementItem, RouterLink, DatePipe, DecimalPipe],
+  imports: [MovementItem, RouterLink, DatePipe, AmountPipe],
   templateUrl: './movements.html',
   styleUrl: './movements.css'
 })
@@ -21,6 +23,7 @@ export default class Movements {
   salaryState = inject(SalaryState);
   movementState = inject(MovementState);
   financeState = inject(FinanceState);
+  privacyState = inject(PrivacyState);
 
   readonly filter = signal<FilterType>('all');
 

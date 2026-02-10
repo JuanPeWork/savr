@@ -25,7 +25,7 @@
                 </div>
               </div>
               <div>
-                <p class="text-lg font-medium leading-tight">{{ salary.amount | number:'1.2-2' }} €</p>
+                <p class="text-lg font-medium leading-tight">{{ salary.amount | amount:privacyState.hideAmounts() }}</p>
                 <p class="text-sm opacity-60 capitalize">{{ salary.date | date:'MMMM yyyy' }}</p>
               </div>
             </div>

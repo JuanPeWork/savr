@@ -1,15 +1,17 @@
 import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Location, DecimalPipe, DatePipe } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { MovementState } from '@state/finance/movement.state';
 import { AlertService } from '@core/ui/alert/alert.service';
 import { ToastService } from '@core/ui/toast/toast.service';
+import { AmountPipe } from '../../shared/pipes/amount.pipe';
+import { PrivacyState } from '../../state/ui/privacy.state';
 
 @Component({
   selector: 'app-movement-detail',
-  imports: [DecimalPipe, DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, AmountPipe],
   templateUrl: './movement-detail.html',
   styleUrl: './movement-detail.css'
 })
@@ -21,6 +23,7 @@ export default class MovementDetail {
   private movementState = inject(MovementState);
   private alertService = inject(AlertService);
   private toastService = inject(ToastService);
+  privacyState = inject(PrivacyState);
 
   private id = toSignal(this.route.paramMap.pipe(map(params => params.get('id'))));
 
