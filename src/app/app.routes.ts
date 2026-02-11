@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '@core/guards/auth.guard';
 import { financeInitGuard } from '@core/guards/finance-init.guard';
 import { welcomeGuard } from '@core/guards/welcome.guard';
 
@@ -16,11 +17,13 @@ export const routes: Routes = [
   },
   {
     path: 'setup',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/setup/setup'),
   },
   {
     path: 'setup/:id',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/setup/setup'),
   },
