@@ -84,10 +84,10 @@
             <label class="label">
               <span class="text-lg font-medium mb-1">Ahorro</span>
             </label>
-            <input type="number" formControlName="savings" class="input input-bordered input-lg" selectOnFocus />
-            @if (formUtils.isValidField(setupForm.controls.distribution, 'savings')) {
+            <input type="number" formControlName="saving" class="input input-bordered input-lg" selectOnFocus />
+            @if (formUtils.isValidField(setupForm.controls.distribution, 'saving')) {
             <span class="text-error">
-              {{ formUtils.getFieldError(setupForm, 'savings') }}
+              {{ formUtils.getFieldError(setupForm, 'saving') }}
             </span>
             }
 

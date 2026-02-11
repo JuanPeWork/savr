@@ -35,8 +35,7 @@ export class FinanceState {
       .filter(m => m.category === category && m.type === 'expense')
       .reduce((sum, m) => sum + m.amount, 0);
 
-    const distributionKey = category === 'saving' ? 'savings' : category;
-    const distributionPercent = activeSalary?.distribution[distributionKey] ?? 0;
+    const distributionPercent = activeSalary?.distribution[category] ?? 0;
     const budget = (activeSalary?.amount ?? 0) * (distributionPercent / 100);
     const percentage = budget > 0 ? (total / budget) * 100 : 0;
 

@@ -58,13 +58,13 @@ export class FormUtils {
   }
 
   static distributionValidator: ValidatorFn = (group) => {
-    const { fixed, variable, savings, leisure } = group.value || {};
+    const { fixed, variable, saving, leisure } = group.value || {};
 
-    if (fixed == null || variable == null || savings == null || leisure == null) {
+    if (fixed == null || variable == null || saving == null || leisure == null) {
       return null;
     }
 
-    return fixed + variable + savings + leisure === 100 ? null: { totalNot100: true };
+    return fixed + variable + saving + leisure === 100 ? null: { totalNot100: true };
   };
 
 

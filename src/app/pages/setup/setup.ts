@@ -34,7 +34,7 @@ export default class Setup implements OnInit {
     distribution: this.fb.nonNullable.group({
       fixed: [50, [Validators.required, Validators.min(0)]],
       variable: [20, [Validators.required, Validators.min(0)]],
-      savings: [20, [Validators.required, Validators.min(0)]],
+      saving: [20, [Validators.required, Validators.min(0)]],
       leisure: [10, [Validators.required, Validators.min(0)]],
     },
     { validators: [FormUtils.distributionValidator] })

@@ -4,7 +4,7 @@ export interface Salary {
   distribution: {
     fixed: number;
     leisure: number;
-    savings: number;
+    saving: number;
     variable: number;
   };
   date: string;
