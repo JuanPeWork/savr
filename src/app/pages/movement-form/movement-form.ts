@@ -75,6 +75,7 @@ readonly conceptPresets: ConceptPreset[] = [
   // Salud
   { label: 'Salud', icon: '🩺' },
   { label: 'Gimnasio', icon: '🏋🏽‍♂️' },
+  { label: 'Suplementos', icon: '💊' },
 
   // Personal
   { label: 'Ropa', icon: '👕' },
