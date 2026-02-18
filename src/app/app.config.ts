@@ -11,6 +11,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 import { SALARY_COLLECTION, MOVEMENT_COLLECTION, provideFirestoreCollection } from '@core/storage/collection.tokens';
+import { CopyRecurringMovementsUseCase } from '@domain/finance/usecases/copy-recurring-movements.usecase';
 
 registerLocaleData(localeEs, 'es');
 
@@ -28,6 +29,7 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     { provide: LOCALE_ID, useValue: 'es' },
     provideFirestoreCollection(SALARY_COLLECTION, 'salaries'),
-    provideFirestoreCollection(MOVEMENT_COLLECTION, 'movements')
+    provideFirestoreCollection(MOVEMENT_COLLECTION, 'movements'),
+    CopyRecurringMovementsUseCase,
   ]
 };
