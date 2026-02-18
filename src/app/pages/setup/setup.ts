@@ -8,6 +8,8 @@ import { MovementState } from '@state/finance/movement.state';
 import { Salary } from '@domain/finance/models/salary.model';
 import { SelectOnFocusDirective } from '@shared/directives/select-on-focus.directive';
 import { ToastService } from '@core/ui/toast/toast.service';
+import { AlertService } from '@core/ui/alert/alert.service';
+import { AuthService } from '@core/auth/auth.service';
 
 @Component({
   selector: 'app-setup',
@@ -24,6 +26,8 @@ export default class Setup implements OnInit {
   private movementState = inject(MovementState);
   private router = inject(Router);
   private toast = inject(ToastService);
+  private alertService = inject(AlertService);
+  private authService = inject(AuthService);
 
 
   formUtils = FormUtils;
@@ -108,7 +112,29 @@ export default class Setup implements OnInit {
     }
   }
 
-  goBack() {
-    this.location.back();
+  async goBack() {
+    if (this.salaryState.hasAnySalary()) {
+      this.location.back();
+      return;
+    }
+
+    if (this.authService.isAnonymous()) {
+      await this.authService.deleteAccount();
+      this.router.navigate(['/welcome']);
+      return;
+    }
+
+    const confirmed = await this.alertService.open({
+      title: 'Cerrar cuenta',
+      message: 'Si vuelves atrás se cerrará tu cuenta. ¿Estás seguro?',
+      confirmText: 'Cerrar cuenta',
+      cancelText: 'Cancelar',
+      variant: 'danger',
+    });
+
+    if (confirmed) {
+      await this.authService.deleteAccount();
+      this.router.navigate(['/welcome']);
+    }
   }
 }

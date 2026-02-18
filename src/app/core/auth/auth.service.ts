@@ -97,6 +97,18 @@ export class AuthService {
     }
   }
 
+  async deleteAccount() {
+    const currentUser = this.auth.currentUser;
+    if (!currentUser) return;
+    try {
+      await currentUser.delete();
+    } catch (error) {
+      console.error('[Auth] Error deleting account:', error);
+      this.toastService.show('Error al eliminar la cuenta');
+      throw error;
+    }
+  }
+
   async logout() {
     try {
       await signOut(this.auth);
