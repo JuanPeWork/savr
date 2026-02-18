@@ -1,4 +1,6 @@
-export type StatType = 'error' | 'warning' | 'success' | 'info'
+import { StatType } from '@shared/constants/category-display.const';
+
+export type { StatType };
 
 export interface CategoryStat {
     total: number;
