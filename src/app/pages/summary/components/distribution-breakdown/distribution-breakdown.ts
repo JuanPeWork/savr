@@ -1,8 +1,8 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { DecimalPipe, NgClass } from '@angular/common';
 import { MovementState } from '@state/finance/movement.state';
-import { MovementCategory } from '@domain/finance/interfaces/movements.interface';
-import { StatType } from '@domain/finance/interfaces/category-stat.interface';
+import { MovementCategory } from '@domain/finance/models/movement.model';
+import { CATEGORY_DISPLAY, StatType } from '@shared/constants/category-display.const';
 import { AmountPipe } from '../../../../shared/pipes/amount.pipe';
 import { PrivacyState } from '../../../../state/ui/privacy.state';
 
@@ -11,19 +11,6 @@ interface BreakdownItem {
   concept: string;
   amount: number;
 }
-
-interface CategoryConfig {
-  name: string;
-  icon: string;
-  color: StatType;
-}
-
-const CATEGORY_CONFIG: Record<MovementCategory, CategoryConfig> = {
-  fixed: { name: 'Fijos', icon: '🏠', color: 'error' },
-  variable: { name: 'Variables', icon: '🛒', color: 'warning' },
-  saving: { name: 'Ahorro', icon: '💰', color: 'success' },
-  leisure: { name: 'Ocio', icon: '🎮', color: 'info' },
-};
 
 const COLOR_CLASSES: Record<StatType, { bg: string; text: string; bar: string }> = {
   error: { bg: 'bg-error/10', text: 'text-error', bar: 'bg-error' },
@@ -46,14 +33,14 @@ export class DistributionBreakdown {
   readonly category = input.required<MovementCategory>();
   readonly closed = output<void>();
 
-  readonly config = computed(() => CATEGORY_CONFIG[this.category()]);
+  readonly config = computed(() => CATEGORY_DISPLAY[this.category()]);
 
   readonly colorClasses = computed(() => COLOR_CLASSES[this.config().color]);
 
   readonly breakdownItems = computed<BreakdownItem[]>(() => {
     const cat = this.category();
     const movements = this.movementState.movementsOfActiveSalary();
-    const filtered = movements.filter(m => m.category === cat && m.type === 'expense');
+    const filtered = movements.filter(m => m.category === cat && m.isExpense());
 
     const grouped = new Map<string, { icon: string; amount: number }>();
     for (const m of filtered) {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Movement } from '@domain/finance/interfaces/movements.interface';
+import { Movement } from '@domain/finance/models/movement.model';
 import { AmountPipe } from '../../../../shared/pipes/amount.pipe';
 import { PrivacyState } from '../../../../state/ui/privacy.state';
 

@@ -1,13 +1,13 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import dayjs from '@core/date/daysjs.config';
 import { FormUtils } from '@utils/form-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SalaryState } from '@state/finance/salary.state';
 import { MovementState } from '@state/finance/movement.state';
-import { Salary } from '@domain/finance/interfaces/salary.interface';
+import { Salary } from '@domain/finance/models/salary.model';
 import { SelectOnFocusDirective } from '@shared/directives/select-on-focus.directive';
+import { ToastService } from '@core/ui/toast/toast.service';
 
 @Component({
   selector: 'app-setup',
@@ -23,6 +23,8 @@ export default class Setup implements OnInit {
   private salaryState = inject(SalaryState);
   private movementState = inject(MovementState);
   private router = inject(Router);
+  private toast = inject(ToastService);
+
 
   formUtils = FormUtils;
 
@@ -32,10 +34,10 @@ export default class Setup implements OnInit {
   setupForm = this.fb.nonNullable.group({
     amount: [0, [Validators.required, Validators.min(1)]],
     distribution: this.fb.nonNullable.group({
-      fixed: [50, [Validators.required, Validators.min(0)]],
+      fixed:    [50, [Validators.required, Validators.min(0)]],
       variable: [20, [Validators.required, Validators.min(0)]],
-      saving: [20, [Validators.required, Validators.min(0)]],
-      leisure: [10, [Validators.required, Validators.min(0)]],
+      saving:   [20, [Validators.required, Validators.min(0)]],
+      leisure:  [10, [Validators.required, Validators.min(0)]],
     },
     { validators: [FormUtils.distributionValidator] })
   });
@@ -61,43 +63,52 @@ export default class Setup implements OnInit {
 
   readonly submitting = signal(false);
 
-  async onSumit() {
-    const isValid = this.setupForm.valid;
+  async onSubmit() {
     this.setupForm.markAllAsTouched();
-
-    if (!isValid || this.submitting()) return;
+    if (!this.setupForm.valid || this.submitting()) return;
 
     this.submitting.set(true);
 
-    const formValue = this.setupForm.getRawValue();
+    const { amount, distribution } = this.setupForm.getRawValue();
 
-    if (this.isEditMode()) {
-      const updatedSalary: Salary = {
-        ...formValue,
-        id: this.editingId!,
-        date: this.salaryState.getById(this.editingId!)!.date,
-      };
-      await this.salaryState.update(updatedSalary);
-    } else {
-      const previousSalary = this.salaryState.activeSalary();
+    try {
+      if (this.isEditMode()) {
+        const original = this.salaryState.getById(this.editingId!)!;
 
-      const newSalary: Salary = {
-        ...formValue,
-        id: crypto.randomUUID(),
-        date: dayjs().toISOString(),
-      };
-      await this.salaryState.create(newSalary);
+        const updated = new Salary({
+          id: original.id,
+          date: original.date,
+          amount,
+          distribution,
+        });
 
-      if (previousSalary) {
-        await this.movementState.copyRecurringMovements(previousSalary.id, newSalary.id);
+        await this.salaryState.update(updated);
+
+      } else {
+        const previousSalary = this.salaryState.activeSalary();
+
+        const newSalary = new Salary({ amount, distribution });
+
+        await this.salaryState.create(newSalary);
+
+        if (previousSalary) {
+          await this.movementState.copyRecurringMovements(
+            previousSalary.id,
+            newSalary.id
+          );
+        }
       }
-    }
 
-    this.router.navigate(['finance-space']);
+      this.router.navigate(['finance-space']);
+
+    } catch (error) {
+    this.toast.show('Error al guardar', 'error');
+   } finally {
+      this.submitting.set(false);
+    }
   }
 
   goBack() {
     this.location.back();
   }
-
 }

@@ -1,5 +1,5 @@
 import { DecimalPipe, NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CategoryStat, StatType } from '@domain/finance/interfaces/category-stat.interface';
 import { AmountPipe } from '../../../../shared/pipes/amount.pipe';
 import { PrivacyState } from '../../../../state/ui/privacy.state';
@@ -9,7 +9,6 @@ import { PrivacyState } from '../../../../state/ui/privacy.state';
   imports: [DecimalPipe, NgClass, AmountPipe],
   templateUrl: './stat-card.html',
   styleUrl: './stat-card.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatCard {
 

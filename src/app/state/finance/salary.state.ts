@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
-
-import { Salary } from "@domain/finance/interfaces/salary.interface";
+import { Salary } from "@domain/finance/models/salary.model";
+import { SalaryMapper } from "@core/storage/mappers/salary.mapper";
 import { SALARY_COLLECTION } from "@core/storage/collection.tokens";
 import { LocalStorageService } from "@core/storage/local-storage.service";
 import { AuthService } from "@core/auth/auth.service";
@@ -23,13 +23,11 @@ export class SalaryState {
   readonly activeSalary = computed(() => {
     const list = this._salaries();
     if (!list.length) return null;
-
     const selectedId = this._selectedId();
     if (selectedId) {
       const selected = list.find(s => s.id === selectedId);
       if (selected) return selected;
     }
-
     return [...list].sort((a, b) => b.date.localeCompare(a.date))[0];
   });
 
@@ -39,13 +37,11 @@ export class SalaryState {
   async ready(): Promise<void> {
     const currentUid = this.authService.currentUid;
     if (!currentUid) return;
-
     if (this._loadedForUid !== currentUid) {
       this._initPromise = undefined;
       this._salaries.set([]);
       this._selectedId.set(null);
     }
-
     if (!this._initPromise) {
       this._loadedForUid = currentUid;
       this._initPromise = this.init();
@@ -54,22 +50,21 @@ export class SalaryState {
   }
 
   async create(salary: Salary) {
-    await this.collection.create(salary);
-    this._salaries.update((s) => [...s, salary]);
+    await this.collection.create(SalaryMapper.toDTO(salary));
+    this._salaries.update(s => [...s, salary]);
     await this.select(salary.id);
   }
 
   async update(salary: Salary) {
-    await this.collection.update(salary);
-    this._salaries.update((list) =>
-      list.map((s) => s.id === salary.id ? salary : s)
+    await this.collection.update(SalaryMapper.toDTO(salary));
+    this._salaries.update(list =>
+      list.map(s => s.id === salary.id ? salary : s)
     );
   }
 
   async delete(id: string) {
     await this.collection.delete(id);
-    this._salaries.update((list) => list.filter((s) => s.id !== id));
-
+    this._salaries.update(list => list.filter(s => s.id !== id));
     if (this._selectedId() === id) {
       this._selectedId.set(null);
       await this.storage.remove(SELECTED_KEY);
@@ -77,7 +72,7 @@ export class SalaryState {
   }
 
   getById(id: string): Salary | undefined {
-    return this._salaries().find((s) => s.id === id);
+    return this._salaries().find(s => s.id === id);
   }
 
   async select(id: string) {
@@ -85,12 +80,14 @@ export class SalaryState {
     await this.storage.set<string>(SELECTED_KEY, id);
   }
 
-  private async init() {
-    const stored = await this.collection.getAll();
-    const selectedId = await this.storage.get<string>(SELECTED_KEY);
+  private async init(): Promise<void> {
+    const [stored, selectedId] = await Promise.all([
+      this.collection.getAll(),
+      this.storage.get<string>(SELECTED_KEY)
+    ]);
 
-    if (stored && Array.isArray(stored)) {
-      this._salaries.set(stored);
+    if (stored?.length) {
+      this._salaries.set(stored.map(dto => SalaryMapper.toDomain(dto)));
     }
 
     if (selectedId) {

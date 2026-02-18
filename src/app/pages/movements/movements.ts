@@ -4,7 +4,7 @@ import { SalaryState } from '@state/finance/salary.state';
 import { MovementItem } from "./components/movement-item/movement-item";
 import { MovementState } from '@state/finance/movement.state';
 import { FinanceState } from '../../state/finance/finance.state';
-import { MovementType } from '@domain/finance/interfaces/movements.interface';
+import { MovementType } from '@domain/finance/models/movement.model';
 import { DatePipe } from '@angular/common';
 import { AmountPipe } from '../../shared/pipes/amount.pipe';
 import { PrivacyState } from '../../state/ui/privacy.state';
@@ -31,8 +31,11 @@ export default class Movements {
     const movements = this.movementState.movementsOfActiveSalary();
     const currentFilter = this.filter();
 
-    if (currentFilter === 'all') return movements;
-    return movements.filter(m => m.type === currentFilter);
+    const filtered = currentFilter === 'all'
+      ? movements
+      : movements.filter(m => m.type === currentFilter);
+
+    return [...filtered].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   });
 
   editSalary() {
